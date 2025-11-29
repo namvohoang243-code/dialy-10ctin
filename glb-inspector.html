@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Local GLB Inspector (Offline)</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "header header"
+        "sidebar main"
+        "footer footer";
+      gap: 8px;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    #dropzone {
+      border: 2px dashed #888;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: color-mix(in oklab, Canvas 95%, Highlight 5%);
+    }
+    #sidebar {
+      grid-area: sidebar;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+    #main {
+      grid-area: main;
+      position: relative;
+      background: #1115;
+      border-radius: 8px;
+      min-height: 360px;
+      overflow: clip;
+    }
+    #report {
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.4;
+      background: color-mix(in oklab, Canvas 90%, Highlight 10%);
+      border-radius: 8px;
+      padding: 10px;
+      overflow: auto;
+      min-height: 200px;
+      max-height: 40vh;
+    }
+    #footer {
+      grid-area: footer;
+      font-size: 12px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    button, input[type="file"], select {
+      font: inherit;
+      padding: 6px 10px;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+    .hint { font-size: 12px; color: #777; }
+    .ok { color: #1a7f37; }
+    .warn { color: #a15c00; }
+    .err { color: #b11a1a; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.159.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <strong>Local GLB Inspector</strong>
+      <span class="hint">Kéo‑thả .glb vào vùng sau hoặc chọn file</span>
+    </div>
+    <div class="row">
+      <input id="fileInput" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" />
+      <button id="copyBtn">Copy report</button>
+    </div>
+  </header>
+
+  <div id="sidebar">
+    <div id="dropzone">Kéo‑thả .glb/.gltf vào đây (không upload lên internet, chạy 100% cục bộ)</div>
+    <div class="row">
+      <label for="bg">Nền:</label>
+      <select id="bg">
+        <option value="#111111">Tối</option>
+        <option value="#ffffff">Sáng</option>
+        <option value="#202533">Xanh đậm</option>
+        <option value="#2a2a2a">Xám đậm</option>
+      </select>
+      <label><input type="checkbox" id="gridToggle" checked /> Grid</label>
+      <label><input type="checkbox" id="axesToggle" checked /> Axes</label>
+      <label><input type="checkbox" id="boundsToggle" /> Bounds</label>
+    </div>
+    <div id="report">Chưa có báo cáo. Hãy kéo‑thả hoặc chọn file.
+
+Gợi ý: Sau khi có báo cáo, bấm "Copy report" và dán vào chat để mình phân tích sâu và tối ưu.</div>
+  </div>
+
+  <div id="main"></div>
+
+  <div id="footer">
+    Mọi xử lý hiển thị và phân tích đều chạy trong trình duyệt của bạn. Không có dữ liệu tải lên máy chủ.
+  </div>
+
+  <script>
+    // Fallback detector if module/externals fail to load (e.g. blocked CDN)
+    window.__inspectorReady = false;
+    setTimeout(() => {
+      if (!window.__inspectorReady) {
+        const el = document.querySelector('#report');
+        if (el) {
+          el.textContent = 'Không tải được thư viện cần thiết.\n\nCách khắc phục:\n- Kiểm tra kết nối Internet hoặc tường lửa chặn unpkg.com.\n- Thử trình duyệt khác (Chrome/Edge/Firefox).\n- Mở file qua một web server cục bộ thay vì file:///:\n  * Python: python3 -m http.server 8000 (rồi mở http://localhost:8000/glb-inspector.html)\n  * VSCode: cài extension "Live Server" rồi Open with Live Server\n  * Node: npx serve .\n\nNếu vẫn lỗi, chụp ảnh màn hình toàn trang + Console (F12) và gửi mình.';
+        }
+      }
+    }, 3000);
+  </script>
+
+  <script type="module">
+    // Using three.js via import map
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+    import { MeshoptDecoder } from 'https://unpkg.com/meshoptimizer@0.20.0/meshopt_decoder.module.js';
+
+    const $ = (sel) => document.querySelector(sel);
+    window.__inspectorReady = true;
+
+    const container = $('#main');
+    const reportEl = $('#report');
+    const fileInput = $('#fileInput');
+    const copyBtn = $('#copyBtn');
+    const dropzone = $('#dropzone');
+
+    const bgSel = $('#bg');
+    const axesToggle = $('#axesToggle');
+    const gridToggle = $('#gridToggle');
+    const boundsToggle = $('#boundsToggle');
+
+    // Renderer & scene
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    container.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#111111');
+
+    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 10000);
+    camera.position.set(2.5, 1.5, 2.5);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x222233, 1.0);
+    const dir = new THREE.DirectionalLight(0xffffff, 1.0);
+    dir.position.set(5, 10, 7);
+    scene.add(hemi, dir);
+
+    const grid = new THREE.GridHelper(10, 10, 0x888888, 0x444444);
+    grid.material.opacity = 0.25; grid.material.transparent = true;
+    scene.add(grid);
+
+    const axes = new THREE.AxesHelper(1.0);
+    scene.add(axes);
+
+    let boundsHelper = null;
+
+    function setHelpersVisibility() {
+      grid.visible = gridToggle.checked;
+      axes.visible = axesToggle.checked;
+      if (boundsHelper) boundsHelper.visible = boundsToggle.checked;
+    }
+    axesToggle.addEventListener('change', setHelpersVisibility);
+    gridToggle.addEventListener('change', setHelpersVisibility);
+    boundsToggle.addEventListener('change', setHelpersVisibility);
+
+    bgSel.addEventListener('change', () => {
+      scene.background = new THREE.Color(bgSel.value);
+    });
+
+    // Resize handling
+    const resize = () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    new ResizeObserver(resize).observe(container);
+
+    // Animation loop
+    renderer.setAnimationLoop(() => {
+      controls.update();
+      renderer.render(scene, camera);
+    });
+
+    // Loading support
+    const gltfLoader = new GLTFLoader();
+    const ktx2 = new KTX2Loader().setTranscoderPath('https://unpkg.com/three@0.159.0/examples/jsm/libs/basis/');
+    ktx2.detectSupport(renderer);
+    gltfLoader.setKTX2Loader(ktx2);
+
+    const draco = new DRACOLoader();
+    draco.setDecoderPath('https://unpkg.com/three@0.159.0/examples/jsm/libs/draco/');
+    gltfLoader.setDRACOLoader(draco);
+
+    gltfLoader.setMeshoptDecoder(MeshoptDecoder);
+
+    let current = null; // current group loaded
+
+    function clearCurrent() {
+      if (current) {
+        scene.remove(current);
+        current.traverse(obj => {
+          if (obj.isMesh) {
+            obj.geometry?.dispose?.();
+            if (obj.material) {
+              const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+              mats.forEach(m => {
+                ['map','normalMap','roughnessMap','metalnessMap','emissiveMap','aoMap','occlusionMap','alphaMap','bumpMap','displacementMap','clearcoatMap','clearcoatRoughnessMap','clearcoatNormalMap','sheenColorMap','sheenRoughnessMap','specularMap','specularColorMap','specularIntensityMap','thicknessMap','transmissionMap','iorMap'].forEach(key => m[key]?.dispose?.());
+                m.dispose?.();
+              });
+            }
+          }
+        });
+        current = null;
+      }
+      if (boundsHelper) { scene.remove(boundsHelper); boundsHelper = null; }
+    }
+
+    function formatBytes(bytes) {
+      if (!Number.isFinite(bytes)) return 'N/A';
+      const units = ['B','KB','MB','GB'];
+      let i = 0; let v = bytes;
+      while (v >= 1024 && i < units.length-1) { v /= 1024; i++; }
+      return `${v.toFixed(v < 10 && i>0 ? 2 : 0)} ${units[i]}`;
+    }
+
+    async function loadFromFile(file) {
+      const name = file.name;
+      const size = file.size;
+
+      reportEl.textContent = `Đang tải mô hình: ${name} (${formatBytes(size)})...`;
+
+      const url = URL.createObjectURL(file);
+      try {
+        const gltf = await gltfLoader.loadAsync(url);
+        onLoaded({ gltf, name, size });
+      } catch (err) {
+        console.error(err);
+        reportEl.textContent = `Lỗi tải mô hình: ${err?.message || err}`;
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    function getTriangleCount(geom) {
+      if (!geom.index && !geom.attributes?.position) return 0;
+      if (geom.index) return geom.index.count / 3;
+      return geom.attributes.position.count / 3;
+    }
+
+    function autoFrame(object3d) {
+      const box = new THREE.Box3().setFromObject(object3d);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const fitHeightDistance = maxDim / (2 * Math.atan((Math.PI * camera.fov) / 360));
+      const fitWidthDistance = fitHeightDistance / camera.aspect;
+      const distance = 1.2 * Math.max(fitHeightDistance, fitWidthDistance);
+
+      const dir = controls.target.clone().sub(camera.position).normalize();
+      controls.maxDistance = distance * 10;
+      camera.near = distance / 100;
+      camera.far = distance * 100;
+      camera.updateProjectionMatrix();
+
+      controls.target.copy(center);
+      camera.position.copy(center).add(new THREE.Vector3(distance, distance * 0.6, distance));
+      controls.update();
+
+      // Bounds helper
+      if (boundsHelper) { scene.remove(boundsHelper); boundsHelper = null; }
+      const boxHelper = new THREE.Box3Helper(box, 0xff8800);
+      boundsHelper = boxHelper;
+      scene.add(boundsHelper);
+      setHelpersVisibility();
+    }
+
+    function collectReport({ gltf, name, size }) {
+      const { scene: gltfScene, materials = [], animations = [] } = gltf;
+
+      let nodes = 0, meshes = 0, primitives = 0;
+      let materialsSet = new Set();
+      let texturesSet = new Set();
+      let vertices = 0, triangles = 0;
+
+      const texProps = ['map','normalMap','roughnessMap','metalnessMap','emissiveMap','aoMap','occlusionMap','alphaMap','bumpMap','displacementMap','envMap','clearcoatMap','clearcoatRoughnessMap','clearcoatNormalMap','sheenColorMap','sheenRoughnessMap','specularMap','specularColorMap','specularIntensityMap','thicknessMap','transmissionMap','iorMap'];
+
+      gltfScene.traverse(obj => {
+        nodes++;
+        if (obj.isMesh) {
+          meshes++;
+          const geoms = [obj.geometry].filter(Boolean);
+          const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+          primitives += geoms.length;
+          geoms.forEach(g => {
+            vertices += g.attributes?.position?.count || 0;
+            triangles += getTriangleCount(g) || 0;
+          });
+          mats.filter(Boolean).forEach(m => {
+            materialsSet.add(m.uuid + (m.name?`:${m.name}`:''));
+            texProps.forEach(p => {
+              const t = m[p];
+              if (t && t.isTexture) {
+                texturesSet.add(`${p}:${t.uuid}:${t.name||''}:${t.image?.width||'?'}x${t.image?.height||'?'}`);
+              }
+            });
+          });
+        }
+      });
+
+      const box = new THREE.Box3().setFromObject(gltfScene);
+      const sizeV = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+
+      const matNames = new Set();
+      (Array.isArray(materials) ? materials : []).forEach(m => m && matNames.add(m.name || m.uuid));
+
+      const lines = [];
+      lines.push(`# GLB Report`);
+      lines.push(`File: ${name} (${formatBytes(size)})`);
+      lines.push(`Three.js: r159  | Generated: ${new Date().toLocaleString()}`);
+      lines.push('');
+      lines.push(`Structure:`);
+      lines.push(`- Nodes: ${nodes}`);
+      lines.push(`- Meshes: ${meshes}`);
+      lines.push(`- Primitives: ${primitives}`);
+      lines.push(`- Materials: ~${materialsSet.size}` + (matNames.size ? ` (declared: ${matNames.size})` : ''));
+      lines.push(`- Textures in use: ~${texturesSet.size}`);
+      lines.push('');
+      lines.push(`Geometry:`);
+      lines.push(`- Vertices: ${vertices.toLocaleString()}`);
+      lines.push(`- Triangles: ${Math.round(triangles).toLocaleString()}`);
+      lines.push('');
+      lines.push(`Bounds (world):`);
+      lines.push(`- Min: ${box.min.x.toFixed(4)}, ${box.min.y.toFixed(4)}, ${box.min.z.toFixed(4)}`);
+      lines.push(`- Max: ${box.max.x.toFixed(4)}, ${box.max.y.toFixed(4)}, ${box.max.z.toFixed(4)}`);
+      lines.push(`- Size: ${sizeV.x.toFixed(4)}, ${sizeV.y.toFixed(4)}, ${sizeV.z.toFixed(4)}`);
+      lines.push(`- Center: ${center.x.toFixed(4)}, ${center.y.toFixed(4)}, ${center.z.toFixed(4)}`);
+      lines.push('');
+      lines.push(`Animations: ${animations?.length || 0}`);
+
+      // Texture list (brief)
+      if (texturesSet.size) {
+        lines.push('');
+        lines.push('Textures (property:uuid:name:WxH):');
+        for (const t of texturesSet) lines.push(`- ${t}`);
+      }
+
+      // Scene graph first level
+      lines.push('');
+      lines.push('Scene graph (depth=1):');
+      gltfScene.children.forEach(ch => {
+        lines.push(`- ${ch.type}${ch.name ? `: ${ch.name}` : ''}`);
+      });
+
+      // Heuristics
+      lines.push('');
+      lines.push('Heuristics & Notes:');
+      if (triangles > 1_000_000) lines.push('- [Warn] Số lượng triangles > 1 triệu, cân nhắc giảm poly hoặc Meshopt/Draco.');
+      if (materialsSet.size > 50) lines.push('- [Warn] Vật liệu nhiều (>50), cân nhắc merge material/atlas.');
+      if (texturesSet.size > 50) lines.push('- [Warn] Texture nhiều (>50), cân nhắc KTX2/WEBP và giảm độ phân giải.');
+      lines.push('- Kiểm tra chuẩn trục: Y-up/Z-forward (GLTF). Nếu model bị xoay lệch, cần re-export hoặc thêm parent transform.');
+      lines.push('- Cân nhắc nén: Draco (geometry), Meshopt (geometry), KTX2 (textures).');
+
+      return lines.join('\n');
+    }
+
+    function onLoaded({ gltf, name, size }) {
+      clearCurrent();
+      current = new THREE.Group();
+      current.name = 'GLBRoot';
+      current.add(gltf.scene);
+      scene.add(current);
+
+      autoFrame(current);
+
+      const text = collectReport({ gltf, name, size });
+      reportEl.textContent = text;
+    }
+
+    async function handleFiles(files) {
+      if (!files || !files.length) {
+        reportEl.textContent = 'Chưa chọn tệp. Hãy kéo‑thả hoặc bấm Chọn file.';
+        return;
+      }
+      const file = files[0];
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      const valid = ['glb','gltf'];
+      if (!valid.includes(ext) && file.type !== 'model/gltf-binary' && file.type !== 'model/gltf+json') {
+        reportEl.textContent = `Tệp không được hỗ trợ: ${file.name}\nVui lòng chọn .glb hoặc .gltf.`;
+        return;
+      }
+      await loadFromFile(file);
+    }
+
+    // Drag & drop
+    const dragTargets = [dropzone, document.body];
+    ;['dragenter','dragover'].forEach(evt => {
+      dragTargets.forEach(target => target.addEventListener(evt, (e) => {
+        e.preventDefault(); e.stopPropagation();
+        dropzone.style.borderColor = '#2d8cf0';
+        dropzone.style.background = 'color-mix(in oklab, Canvas 85%, Highlight 15%)';
+      }));
+    });
+    ;['dragleave','drop'].forEach(evt => {
+      dragTargets.forEach(target => target.addEventListener(evt, (e) => {
+        e.preventDefault(); e.stopPropagation();
+        dropzone.style.borderColor = '#888';
+        dropzone.style.background = 'color-mix(in oklab, Canvas 95%, Highlight 5%)';
+      }));
+    });
+    ;['drop'].forEach(evt => {
+      dragTargets.forEach(target => target.addEventListener(evt, (e) => {
+        const dt = e.dataTransfer;
+        if (dt?.files?.length) handleFiles(dt.files);
+      }));
+    });
+
+    // File input
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    // Copy report
+    copyBtn.addEventListener('click', async () => {
+      const txt = reportEl.textContent || '';
+      try {
+        await navigator.clipboard.writeText(txt);
+        copyBtn.textContent = 'Đã copy!';
+        setTimeout(() => (copyBtn.textContent = 'Copy report'), 1200);
+      } catch (err) {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = txt; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch {}
+        document.body.removeChild(ta);
+        copyBtn.textContent = 'Đã copy!';
+        setTimeout(() => (copyBtn.textContent = 'Copy report'), 1200);
+      }
+    });
+
+    // Helpful: click container to focus controls on laptop trackpads
+    container.addEventListener('click', () => container.focus?.());
+  </script>
+</body>
+</html>

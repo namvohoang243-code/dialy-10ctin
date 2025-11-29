@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô hình 3D Mảng Kiến Tạo Trái Đất</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 350px;
+            z-index: 100;
+        }
+
+        #info-panel h1 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        #info-panel p {
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: #cccccc;
+        }
+
+        #controls-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #00ffff;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 5px 5px 5px 0;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .plate-legend {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .plate-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 11px;
+        }
+
+        .plate-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #00ffff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <!-- Chatbot Widget CSS -->
+    <link rel="stylesheet" href="chatbot-widget.css">
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Đang tải mô hình 3D...</p>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="info-panel">
+        <h1>MÔ HÌNH 3D MẢNG KIẾN TẠO</h1>
+        <p>Mô phỏng chân thực các mảng kiến tạo của Trái Đất với chuyển động ghép nối.</p>
+        <p><strong>Điều khiển:</strong></p>
+        <p>• Chuột trái: Xoay mô hình<br>
+           • Chuột phải: Di chuyển<br>
+           • Cuộn chuột: Phóng to/thu nhỏ</p>
+
+        <div class="plate-legend">
+            <strong style="color: #00ffff;">DANH SÁCH MẢNG:</strong>
+            <div class="plate-item">
+                <div class="plate-color" style="background: #3498db;"></div>
+                <span>Mảng Thái Bình Dương</span>
+            </div>
+            <div class="plate-item">
+                <div class="plate-color" style="background: #e74c3c;"></div>
+                <span>Mảng Bắc Mỹ</span>
+            </div>
+            <div class="plate-item">
+                <div class="plate-color" style="background: #2ecc71;"></div>
+                <span>Mảng Nam Mỹ</span>
+            </div>
+            <div class="plate-item">
+                <div class="plate-color" style="background: #f39c12;"></div>
+                <span>Mảng Phi</span>
+            </div>
+            <div class="plate-item">
+                <div class="plate-color" style="background: #9b59b6;"></div>
+                <span>Mảng Âu-Á</span>
+            </div>
+            <div class="plate-item">
+                <div class="plate-color" style="background: #1abc9c;"></div>
+                <span>Mảng Ấn-Úc</span>
+            </div>
+            <div class="plate-item">
+                <div class="plate-color" style="background: #ecf0f1;"></div>
+                <span>Mảng Nam Cực</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="controls-panel">
+        <div class="control-group">
+            <button id="btn-play">▶ Phát Animation</button>
+            <button id="btn-pause">⏸ Tạm dừng</button>
+            <button id="btn-reset">⟲ Reset</button>
+        </div>
+
+        <div class="control-group">
+            <label>Tốc độ animation:</label>
+            <input type="range" id="speed-slider" min="0.1" max="3" step="0.1" value="1">
+            <span id="speed-value">1.0x</span>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="toggle-glow" checked>
+                Hiệu ứng phát sáng di chuyển mảng kiến tạo
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="toggle-earth" checked>
+                Hiển thị Trái Đất bán trong suốt
+            </label>
+        </div>
+
+        <div class="control-group">
+            <button id="btn-export">📦 Xuất GLTF</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+        // ============================================
+        // KHỞI TẠO SCENE, CAMERA, RENDERER
+        // ============================================
+
+        let scene, camera, renderer, controls;
+        let earth, tectonicPlates = [];
+        let animationMixer, clock;
+        let isAnimating = false;
+        let animationSpeed = 1.0;
+        let glowMeshes = [];
+
+        const EARTH_RADIUS = 5;
+        const PLATE_THICKNESS = 0.15;
+        const ANIMATION_DURATION = 20; // giây
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0a);
+            scene.fog = new THREE.Fog(0x0a0a0a, 10, 50);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(
+                60,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            camera.position.set(12, 8, 12);
+            camera.lookAt(0, 0, 0);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: true,
+                powerPreference: "high-performance"
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Controls
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 8;
+            controls.maxDistance = 30;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.5;
+
+            // Clock
+            clock = new THREE.Clock();
+
+            // Lights
+            setupLights();
+
+            // Create Earth and Tectonic Plates
+            createEarth();
+            createTectonicPlates();
+
+            // Event Listeners
+            setupEventListeners();
+
+            // Hide loading
+            document.getElementById('loading').style.display = 'none';
+
+            // Start animation loop
+            animate();
+        }
+
+        // ============================================
+        // THIẾT LẬP ÁNH SÁNG
+        // ============================================
+
+        function setupLights() {
+            // Ambient light
+            const ambientLight = new THREE.AmbientLight(0x404040, 2);
+            scene.add(ambientLight);
+
+            // Directional light (Sun)
+            const sunLight = new THREE.DirectionalLight(0xffffff, 3);
+            sunLight.position.set(10, 10, 10);
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+            sunLight.shadow.camera.near = 0.5;
+            sunLight.shadow.camera.far = 50;
+            scene.add(sunLight);
+
+            // Point lights for dramatic effect
+            const pointLight1 = new THREE.PointLight(0x00ffff, 2, 30);
+            pointLight1.position.set(-10, 5, -10);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xff3366, 1.5, 30);
+            pointLight2.position.set(10, -5, 10);
+            scene.add(pointLight2);
+
+            // Hemisphere light
+            const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x362003, 1);
+            scene.add(hemiLight);
+        }
+
+        // ============================================
+        // TẠO TRÁI ĐẤT BÁN TRONG SUỐT
+        // ============================================
+
+        function createEarth() {
+            const geometry = new THREE.SphereGeometry(EARTH_RADIUS, 128, 128);
+
+            // Custom shader for Earth
+            const material = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 }
+                },
+                vertexShader: `
+                    varying vec3 vNormal;
+                    varying vec3 vPosition;
+
+                    void main() {
+                        vNormal = normalize(normalMatrix * normal);
+                        vPosition = position;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    uniform float time;
+                    varying vec3 vNormal;
+                    varying vec3 vPosition;
+
+                    void main() {
+                        // Gradient based on position
+                        vec3 oceanColor = vec3(0.05, 0.15, 0.35);
+                        vec3 landColor = vec3(0.15, 0.25, 0.15);
+
+                        float noise = sin(vPosition.x * 10.0 + time) *
+                                     cos(vPosition.y * 10.0 - time) *
+                                     sin(vPosition.z * 10.0 + time * 0.5);
+                        noise = noise * 0.5 + 0.5;
+
+                        vec3 color = mix(oceanColor, landColor, noise);
+
+                        // Fresnel effect
+                        float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.0);
+                        color += vec3(0.1, 0.3, 0.5) * fresnel;
+
+                        gl_FragColor = vec4(color, 0.3);
+                    }
+                `,
+                transparent: true,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+
+            earth = new THREE.Mesh(geometry, material);
+            earth.name = 'Earth';
+            scene.add(earth);
+        }
+
+        // ============================================
+        // TẠO TEXTURE PROCEDURAL CHO ĐÁ BAZAN-GRANIT
+        // ============================================
+
+        function createRockTexture(baseColor) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            // Base color
+            ctx.fillStyle = baseColor;
+            ctx.fillRect(0, 0, 512, 512);
+
+            // Add noise for rock texture
+            const imageData = ctx.getImageData(0, 0, 512, 512);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const noise = Math.random() * 60 - 30;
+                data[i] += noise;     // R
+                data[i + 1] += noise; // G
+                data[i + 2] += noise; // B
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+
+            // Add some darker spots for detail
+            for (let i = 0; i < 100; i++) {
+                const x = Math.random() * 512;
+                const y = Math.random() * 512;
+                const radius = Math.random() * 20 + 5;
+
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                gradient.addColorStop(0, 'rgba(0, 0, 0, 0.4)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+            }
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+
+            return texture;
+        }
+
+        // ============================================
+        // TẠO NORMAL MAP CHO ĐỘ NHẤp
+        // ============================================
+
+        function createNormalMap() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            // Create noise-based normal map
+            const imageData = ctx.getImageData(0, 0, 512, 512);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const noise = Math.random();
+                data[i] = noise * 255;         // R (X normal)
+                data[i + 1] = noise * 255;     // G (Y normal)
+                data[i + 2] = 128 + noise * 127; // B (Z normal)
+                data[i + 3] = 255;             // A
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            return texture;
+        }
+
+        // ============================================
+        // TẠO CÁC MẢNG KIẾN TẠO 3D
+        // ============================================
+
+        const plateData = [
+            {
+                name: 'Pacific',
+                color: '#3498db',
+                segments: generatePlateSegments(-180, -90, 90, 60, 40),
+                initialPosition: { x: -2, y: 0, z: 0 }
+            },
+            {
+                name: 'NorthAmerica',
+                color: '#e74c3c',
+                segments: generatePlateSegments(-170, 15, 75, 80, 35),
+                initialPosition: { x: 1.5, y: 1, z: -0.5 }
+            },
+            {
+                name: 'SouthAmerica',
+                color: '#2ecc71',
+                segments: generatePlateSegments(-80, -60, 15, 70, 30),
+                initialPosition: { x: 1, y: -1.5, z: 0 }
+            },
+            {
+                name: 'Africa',
+                color: '#f39c12',
+                segments: generatePlateSegments(-20, -40, 40, 60, 35),
+                initialPosition: { x: 0, y: -0.5, z: 1.5 }
+            },
+            {
+                name: 'Eurasia',
+                color: '#9b59b6',
+                segments: generatePlateSegments(-10, 30, 180, 80, 45),
+                initialPosition: { x: -1, y: 1.5, z: -1 }
+            },
+            {
+                name: 'IndoAustralian',
+                color: '#1abc9c',
+                segments: generatePlateSegments(60, -50, 160, 40, 35),
+                initialPosition: { x: -1, y: -1, z: 1 }
+            },
+            {
+                name: 'Antarctic',
+                color: '#ecf0f1',
+                segments: generatePlateSegments(-180, -90, 180, -60, 25),
+                initialPosition: { x: 0, y: -2, z: 0 }
+            }
+        ];
+
+        function generatePlateSegments(lonStart, latStart, lonEnd, latEnd, numPoints) {
+            const points = [];
+            const latStep = (latEnd - latStart) / Math.sqrt(numPoints);
+            const lonStep = (lonEnd - lonStart) / Math.sqrt(numPoints);
+
+            for (let lat = latStart; lat <= latEnd; lat += latStep) {
+                for (let lon = lonStart; lon <= lonEnd; lon += lonStep) {
+                    // Convert lat/lon to 3D coordinates
+                    const phi = (90 - lat) * Math.PI / 180;
+                    const theta = (lon + 180) * Math.PI / 180;
+
+                    const x = EARTH_RADIUS * Math.sin(phi) * Math.cos(theta);
+                    const y = EARTH_RADIUS * Math.cos(phi);
+                    const z = EARTH_RADIUS * Math.sin(phi) * Math.sin(theta);
+
+                    points.push(new THREE.Vector3(x, y, z));
+                }
+            }
+
+            return points;
+        }
+
+        function createTectonicPlates() {
+            plateData.forEach(plate => {
+                const plateGroup = new THREE.Group();
+                plateGroup.name = plate.name;
+
+                // Create plate geometry with thickness
+                const shape = createPlateShape(plate.segments);
+                const extrudeSettings = {
+                    depth: PLATE_THICKNESS,
+                    bevelEnabled: true,
+                    bevelThickness: 0.02,
+                    bevelSize: 0.01,
+                    bevelSegments: 3
+                };
+
+                // Create custom geometry for 3D plate
+                const plateGeometry = createPlateGeometry(plate.segments, PLATE_THICKNESS);
+
+                // Create PBR material with procedural texture
+                const texture = createRockTexture(plate.color);
+                const normalMap = createNormalMap();
+
+                const material = new THREE.MeshStandardMaterial({
+                    map: texture,
+                    normalMap: normalMap,
+                    roughness: 0.9,
+                    metalness: 0.1,
+                    normalScale: new THREE.Vector2(2, 2),
+                    side: THREE.DoubleSide
+                });
+
+                const plateMesh = new THREE.Mesh(plateGeometry, material);
+                plateMesh.castShadow = true;
+                plateMesh.receiveShadow = true;
+
+                plateGroup.add(plateMesh);
+
+                // Create glow effect at boundaries
+                const glowMaterial = new THREE.ShaderMaterial({
+                    uniforms: {
+                        time: { value: 0 },
+                        glowColor: { value: new THREE.Color(0xff6600) }
+                    },
+                    vertexShader: `
+                        varying vec3 vNormal;
+                        varying vec3 vPosition;
+
+                        void main() {
+                            vNormal = normalize(normalMatrix * normal);
+                            vPosition = position;
+                            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                        }
+                    `,
+                    fragmentShader: `
+                        uniform float time;
+                        uniform vec3 glowColor;
+                        varying vec3 vNormal;
+                        varying vec3 vPosition;
+
+                        void main() {
+                            float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+                            intensity *= (sin(time * 2.0) * 0.3 + 0.7);
+
+                            vec3 glow = glowColor * intensity;
+                            gl_FragColor = vec4(glow, intensity * 0.8);
+                        }
+                    `,
+                    transparent: true,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false
+                });
+
+                const glowGeometry = plateGeometry.clone();
+                const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+                glowMesh.scale.set(1.02, 1.02, 1.02);
+                plateGroup.add(glowMesh);
+                glowMeshes.push(glowMesh);
+
+                // Set initial position (separated for animation)
+                plateGroup.position.set(
+                    plate.initialPosition.x,
+                    plate.initialPosition.y,
+                    plate.initialPosition.z
+                );
+
+                plateGroup.userData.targetPosition = new THREE.Vector3(0, 0, 0);
+                plateGroup.userData.initialPosition = plateGroup.position.clone();
+
+                scene.add(plateGroup);
+                tectonicPlates.push(plateGroup);
+            });
+        }
+
+        function createPlateGeometry(points, thickness) {
+            const geometry = new THREE.BufferGeometry();
+
+            if (points.length < 3) return geometry;
+
+            // Create convex hull from points
+            const vertices = [];
+            const indices = [];
+            const normals = [];
+            const uvs = [];
+
+            // Top face vertices
+            points.forEach(point => {
+                vertices.push(point.x, point.y, point.z);
+            });
+
+            // Bottom face vertices (offset inward)
+            points.forEach(point => {
+                const normal = point.clone().normalize();
+                const bottom = point.clone().sub(normal.multiplyScalar(thickness));
+                vertices.push(bottom.x, bottom.y, bottom.z);
+            });
+
+            // Create triangulation for top face
+            for (let i = 1; i < points.length - 1; i++) {
+                indices.push(0, i, i + 1);
+            }
+
+            // Create triangulation for bottom face
+            const offset = points.length;
+            for (let i = 1; i < points.length - 1; i++) {
+                indices.push(offset, offset + i + 1, offset + i);
+            }
+
+            // Create side faces
+            for (let i = 0; i < points.length; i++) {
+                const next = (i + 1) % points.length;
+
+                const a = i;
+                const b = next;
+                const c = offset + i;
+                const d = offset + next;
+
+                indices.push(a, b, c);
+                indices.push(b, d, c);
+            }
+
+            // Compute normals
+            const positionAttribute = new THREE.Float32BufferAttribute(vertices, 3);
+            geometry.setAttribute('position', positionAttribute);
+            geometry.setIndex(indices);
+            geometry.computeVertexNormals();
+
+            // Generate UVs
+            const posCount = vertices.length / 3;
+            for (let i = 0; i < posCount; i++) {
+                uvs.push(
+                    (vertices[i * 3] + EARTH_RADIUS) / (2 * EARTH_RADIUS),
+                    (vertices[i * 3 + 1] + EARTH_RADIUS) / (2 * EARTH_RADIUS)
+                );
+            }
+
+            geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+
+            return geometry;
+        }
+
+        function createPlateShape(points) {
+            // Simplified shape creation for plates
+            const shape = new THREE.Shape();
+
+            if (points.length === 0) return shape;
+
+            // Project to 2D for shape creation
+            shape.moveTo(points[0].x, points[0].y);
+
+            for (let i = 1; i < points.length; i++) {
+                shape.lineTo(points[i].x, points[i].y);
+            }
+
+            shape.lineTo(points[0].x, points[0].y);
+
+            return shape;
+        }
+
+        // ============================================
+        // ANIMATION SYSTEM
+        // ============================================
+
+        let animationProgress = 0;
+
+        function updateAnimation(delta) {
+            if (!isAnimating) return;
+
+            animationProgress += (delta * animationSpeed) / ANIMATION_DURATION;
+
+            if (animationProgress >= 1) {
+                animationProgress = 1;
+                isAnimating = false;
+            }
+
+            // Ease in-out function
+            const easeProgress = easeInOutCubic(animationProgress);
+
+            // Update plate positions
+            tectonicPlates.forEach(plate => {
+                const initial = plate.userData.initialPosition;
+                const target = plate.userData.targetPosition;
+
+                plate.position.lerpVectors(initial, target, easeProgress);
+
+                // Add some rotation for realism
+                plate.rotation.y = easeProgress * Math.PI * 0.1;
+            });
+        }
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        // ============================================
+        // ANIMATION LOOP
+        // ============================================
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            const elapsed = clock.getElapsedTime();
+
+            // Update controls
+            controls.update();
+
+            // Update animation
+            updateAnimation(delta);
+
+            // Update Earth shader
+            if (earth) {
+                earth.material.uniforms.time.value = elapsed * 0.1;
+            }
+
+            // Update glow effect
+            glowMeshes.forEach(glow => {
+                glow.material.uniforms.time.value = elapsed;
+            });
+
+            // Render scene
+            renderer.render(scene, camera);
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        function setupEventListeners() {
+            // Play button
+            document.getElementById('btn-play').addEventListener('click', () => {
+                isAnimating = true;
+                document.getElementById('btn-play').classList.add('active');
+                document.getElementById('btn-pause').classList.remove('active');
+            });
+
+            // Pause button
+            document.getElementById('btn-pause').addEventListener('click', () => {
+                isAnimating = false;
+                document.getElementById('btn-play').classList.remove('active');
+                document.getElementById('btn-pause').classList.add('active');
+            });
+
+            // Reset button
+            document.getElementById('btn-reset').addEventListener('click', () => {
+                animationProgress = 0;
+                isAnimating = false;
+
+                tectonicPlates.forEach(plate => {
+                    plate.position.copy(plate.userData.initialPosition);
+                    plate.rotation.set(0, 0, 0);
+                });
+
+                document.getElementById('btn-play').classList.remove('active');
+                document.getElementById('btn-pause').classList.remove('active');
+            });
+
+            // Speed slider
+            document.getElementById('speed-slider').addEventListener('input', (e) => {
+                animationSpeed = parseFloat(e.target.value);
+                document.getElementById('speed-value').textContent = animationSpeed.toFixed(1) + 'x';
+            });
+
+            // Toggle glow
+            document.getElementById('toggle-glow').addEventListener('change', (e) => {
+                glowMeshes.forEach(glow => {
+                    glow.visible = e.target.checked;
+                });
+            });
+
+            // Toggle earth
+            document.getElementById('toggle-earth').addEventListener('change', (e) => {
+                if (earth) {
+                    earth.visible = e.target.checked;
+                }
+            });
+
+            // Export GLTF
+            document.getElementById('btn-export').addEventListener('click', exportGLTF);
+
+            // Window resize
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // ============================================
+        // EXPORT GLTF
+        // ============================================
+
+        function exportGLTF() {
+            const exporter = new GLTFExporter();
+
+            const options = {
+                binary: true,
+                maxTextureSize: 2048
+            };
+
+            exporter.parse(
+                scene,
+                function (result) {
+                    if (result instanceof ArrayBuffer) {
+                        saveArrayBuffer(result, 'tectonic_plates_model.glb');
+                    } else {
+                        const output = JSON.stringify(result, null, 2);
+                        saveString(output, 'tectonic_plates_model.gltf');
+                    }
+                },
+                function (error) {
+                    console.error('Export error:', error);
+                    alert('Lỗi khi xuất mô hình: ' + error);
+                },
+                options
+            );
+        }
+
+        function saveArrayBuffer(buffer, filename) {
+            save(new Blob([buffer], { type: 'application/octet-stream' }), filename);
+        }
+
+        function saveString(text, filename) {
+            save(new Blob([text], { type: 'text/plain' }), filename);
+        }
+
+        function save(blob, filename) {
+            const link = document.createElement('a');
+            link.style.display = 'none';
+            document.body.appendChild(link);
+
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+
+            document.body.removeChild(link);
+        }
+
+        // ============================================
+        // START APPLICATION
+        // ============================================
+
+        init();
+
+    </script>
+  
+  <!-- GeoBot AI Loader -->
+  <!-- Chatbot Widget -->
+  <script src="chatbot-widget.js"></script>
+</body>
+</html>

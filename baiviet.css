@@ -1,0 +1,986 @@
+/* Nền tổng thể - Đồng bộ với trang chủ */
+:root {
+  --brand-gold: #e6c266;
+  --brand-blue: #409cff;
+  --ink-900: #0b1220;
+  --ink-800: #111827;
+  --ink-700: #1f2937;
+  --glass-bg: rgba(17, 24, 39, 0.86);
+  --glass-border: rgba(230, 194, 102, 0.2);
+  --glass-border-strong: rgba(230, 194, 102, 0.35);
+}
+
+body {
+    background:
+        linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
+        linear-gradient(180deg, rgba(11, 18, 32, 0.9), rgba(17, 24, 39, 0.88)),
+        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2100&q=85') center / cover fixed no-repeat;
+    color: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    scroll-behavior: smooth;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+    background:
+        linear-gradient(rgba(255,255,255,0.06), rgba(255,255,255,0.06)),
+        linear-gradient(rgba(0, 8, 20, 0.4), rgba(0, 8, 20, 0.55)),
+        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2100&q=85') center / cover fixed no-repeat;
+    color: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    scroll-behavior: smooth;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hero Section - Fix căn giữa */
+.hero-section {
+    text-align: center !important;
+    padding: 120px 20px 80px;
+    min-height: 400px;
+}
+
+.hero-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-section h1,
+.hero-section p {
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Loại bỏ overlay tối */
+body::before {
+    display: none;
+}
+
+
+/* Bố cục chính */
+
+.content-container {
+    display: flex;
+    padding-top: 100px;
+}
+
+
+/* Sidebar */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: rgba(26, 35, 50, 0.95);
+    backdrop-filter: blur(15px) saturate(120%);
+    padding: 100px 15px 30px 15px;
+    overflow-y: auto;
+    border-right: 2px solid rgba(64, 156, 255, 0.3);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.5);
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    z-index: 999;
+    opacity: 0;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.sidebar.closing {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #409cff, #67d7ff, #409cff);
+    background-size: 200%;
+    animation: shimmer 3s infinite linear;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.sidebar ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+.sidebar li {
+    margin: 8px 0;
+    animation: fadeInUp 0.6s ease backwards;
+}
+
+.sidebar li:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.sidebar li:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.sidebar li:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.sidebar li:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sidebar a {
+    display: block;
+    color: #e8e8e8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 14px 18px;
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.sidebar a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(180deg, #409cff, #2563eb);
+    transform: scaleY(0);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 4px 4px 0;
+}
+
+.sidebar a::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%) translateX(-10px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    content: '\f054';
+    color: #409cff;
+    font-size: 0.8rem;
+}
+
+.sidebar a:hover {
+    color: #fff;
+    background: rgba(64, 156, 255, 0.15);
+    border-color: rgba(64, 156, 255, 0.4);
+    padding-left: 28px;
+    box-shadow: 0 5px 20px rgba(64, 156, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.sidebar a:hover::before {
+    transform: scaleY(1);
+}
+
+.sidebar a:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.sidebar a.active {
+    background: linear-gradient(135deg, rgba(64, 156, 255, 0.25), rgba(37, 99, 235, 0.2));
+    color: #fff;
+    border-color: #409cff;
+    box-shadow: 0 8px 25px rgba(64, 156, 255, 0.3), inset 0 0 20px rgba(64, 156, 255, 0.1);
+    padding-left: 28px;
+}
+
+.sidebar a.active::before {
+    transform: scaleY(1);
+    box-shadow: 0 0 15px rgba(64, 156, 255, 0.6);
+}
+
+
+/* Main content */
+
+.main-content {
+    background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+    border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35) inset, 0 10px 40px rgba(0,0,0,0.4);
+
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 900px;
+    padding: 20px;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.main-content section {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 35px 32px;
+    margin-bottom: 48px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 
+                0 0 0 1px rgba(103, 215, 255, 0.1) inset;
+    transition: all 0.4s ease-in-out;
+}
+
+.main-content section:hover {
+    border-color: rgba(103, 215, 255, 0.3);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6),
+                0 0 30px rgba(103, 215, 255, 0.1),
+                0 0 0 1px rgba(103, 215, 255, 0.2) inset;
+    transform: translateY(-2px);
+}
+
+
+/* Tiêu đề section */
+
+.main-content h2 {
+    color: var(--brand-gold);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    border-bottom: 2px solid rgba(230, 194, 102, 0.28);
+    padding-bottom: 12px;
+    -webkit-text-fill-color: initial;
+    text-shadow: 0 2px 20px rgba(230, 194, 102, 0.15);
+}
+
+.main-content h3 {
+    color: #e5e7eb;
+    text-shadow: 0 1px 12px rgba(255,255,255,0.06);
+}
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 28px;
+    margin-bottom: 16px;
+    padding-left: 12px;
+    border-left: 4px solid #67d7ff;
+}
+
+.main-content h4 {
+    color: #e0f2ff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+.main-content p {
+    color: #f0f0f0;
+    line-height: 1.9;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 16px;
+    text-align: justify;
+    letter-spacing: 0.01em;
+}
+
+.main-content li {
+    color: #f0f0f0;
+    line-height: 1.85;
+    font-size: 1.08rem;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+.main-content ul,
+.main-content ol {
+    color: #f0f0f0;
+    padding-left: 24px;
+}
+
+.main-content ul li {
+    padding-left: 8px;
+}
+
+/* Nhấn mạnh văn bản */
+.main-content strong,
+.main-content b {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.main-content em,
+.main-content i {
+    color: #67d7ff;
+    font-style: italic;
+}
+
+
+/* Links trong nội dung */
+.main-content a {
+    color: #67d7ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(103, 215, 255, 0.3);
+}
+
+.main-content a:hover {
+    color: #ffffff;
+    border-bottom-color: #67d7ff;
+    text-shadow: 0 0 8px rgba(103, 215, 255, 0.5);
+}
+
+/* Danh sách có bullet đẹp hơn */
+.main-content ul li::marker {
+    color: #67d7ff;
+    font-size: 1.2em;
+}
+
+.main-content ol li::marker {
+    color: #67d7ff;
+    font-weight: 600;
+}
+
+/* Ảnh và video */
+
+.main-content img,
+.main-content video {
+    width: 100%;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.main-content img:hover,
+.main-content video:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 30px rgba(103, 215, 255, 0.2);
+}
+
+
+/* Hiệu ứng fade-in khi cuộn */
+
+.fade-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Scrollbar tùy chỉnh */
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #409cff, #2563eb);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(64, 156, 255, 0.4);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #67d7ff, #409cff);
+    box-shadow: 0 0 15px rgba(64, 156, 255, 0.7);
+}
+
+
+/* Navbar container layout - DESKTOP */
+.site-navbar .container {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    position: relative;
+}
+
+.site-navbar .navbar-brand {
+    margin-right: auto;
+}
+
+/* Nút toggle sidebar trong navbar - DESKTOP */
+.sidebar-toggle-btn {
+    background: linear-gradient(135deg, #409cff, #2563eb);
+    border: 2px solid #409cff;
+    border-radius: 8px;
+    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(64, 156, 255, 0.3);
+    font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
+    margin-right: 15px;
+    z-index: 1;
+    flex-shrink: 0;
+    order: -1;
+}
+
+.sidebar-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.sidebar-toggle-btn:hover::before {
+    width: 100px;
+    height: 100px;
+}
+
+.sidebar-toggle-btn:hover {
+    background: linear-gradient(135deg, #67d7ff, #409cff);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(64, 156, 255, 0.5);
+}
+
+.sidebar-toggle-btn.active {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    border-color: #1e40af;
+}
+
+.sidebar-toggle-btn i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-toggle-btn.active i {
+    transform: rotate(90deg);
+}
+
+
+/* Overlay khi sidebar mở trên mobile (ẩn đi) */
+
+.sidebar-overlay {
+    display: none;
+}
+
+
+/* =============================
+   MOBILE OPTIMIZATION - BAIVIET
+   ============================= */
+
+/* Tablet */
+@media (max-width: 992px) {
+    /* Navbar */
+    .site-navbar .container {
+        padding-left: 10px;
+        padding-right: 15px;
+    }
+
+    .site-navbar .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 260px;
+    }
+
+    .sidebar a {
+        font-size: 0.95rem;
+        padding: 12px 16px;
+    }
+
+    /* Toggle button */
+    .sidebar-toggle-btn {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+        font-size: 1rem;
+    }
+
+    /* Main content */
+    .main-content {
+        padding: 25px 20px;
+    }
+
+    .main-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .main-content section {
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    /* Navbar adjustments - LAYOUT ĐÚNG VỊ TRÍ */
+    .site-navbar {
+        padding: 8px 0;
+    }
+
+    .site-navbar .container {
+        padding-left: 10px;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        justify-content: space-between;
+    }
+
+    /* Spacer giữa brand và toggler */
+    .site-navbar .container::after {
+        content: '';
+        flex: 1 1 auto;
+        order: 1;
+    }
+
+    .site-navbar .navbar-brand {
+        margin-left: 0;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        white-space: nowrap;
+        overflow: visible;
+        order: 0;
+    }
+
+    /* Toggle button mobile - BÊN TRÁI */
+    .sidebar-toggle-btn {
+        width: 38px;
+        height: 38px;
+        margin-right: 10px;
+        margin-left: 0;
+        font-size: 0.9rem;
+        position: relative;
+        flex-shrink: 0;
+        order: -1;
+    }
+
+    /* Navbar toggler (hamburger menu) - CỐ ĐỊNH NGOÀI CÙNG BÊN PHẢI */
+    .navbar-toggler {
+        flex-shrink: 0;
+        padding: 6px 10px;
+        order: 2;
+        position: relative;
+        border-color: rgba(64, 156, 255, 0.5);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 6px;
+    }
+
+    .navbar-toggler:hover {
+        background: rgba(64, 156, 255, 0.1);
+        border-color: rgba(64, 156, 255, 0.8);
+        transform: scale(1.05);
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: 0 0 0 3px rgba(64, 156, 255, 0.2);
+        outline: none;
+    }
+
+    .navbar-toggler[aria-expanded="true"] {
+        background: rgba(64, 156, 255, 0.15);
+        border-color: #409cff;
+    }
+
+    .navbar-toggler-icon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+    }
+
+    /* Rotate icon khi navbar mở */
+    .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+        transform: rotate(90deg);
+    }
+
+    /* Navbar collapse - absolute với animation mượt mà */
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: rgba(10, 10, 20, 0.95);
+        backdrop-filter: blur(15px);
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
+
+    .navbar-collapse.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .navbar-collapse.collapsing {
+        display: block;
+        transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Animation cho nav items */
+    .navbar-collapse.show .nav-item {
+        animation: slideInDown 0.4s ease backwards;
+    }
+
+    .navbar-collapse.show .nav-item:nth-child(1) {
+        animation-delay: 0.05s;
+    }
+
+    .navbar-collapse.show .nav-item:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .navbar-collapse.show .navbar-nav:last-child .nav-item:nth-child(1) {
+        animation-delay: 0.15s;
+    }
+
+    .navbar-collapse.show .navbar-nav:last-child .nav-item:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Sidebar fullscreen overlay style */
+    .sidebar {
+        width: 100%;
+        max-width: 320px;
+        box-shadow: 4px 0 40px rgba(0, 0, 0, 0.8);
+        padding: 90px 20px 30px 20px;
+    }
+
+    .sidebar.active {
+        box-shadow: 4px 0 60px rgba(0, 0, 0, 0.9);
+    }
+
+    .sidebar a {
+        font-size: 1rem;
+        padding: 14px 18px;
+    }
+
+    /* Sidebar overlay for mobile */
+    .sidebar-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 20, 0.7);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 998;
+    }
+
+    .sidebar.active ~ .sidebar-overlay,
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Content container */
+    .content-container {
+        padding-top: 85px;
+        flex-direction: column;
+    }
+
+    /* Main content */
+    .main-content {
+        margin-left: 0 !important;
+        padding: 20px 15px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .main-content.shifted {
+        margin-left: 0 !important;
+    }
+
+    .main-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .main-content section {
+        padding: 18px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+    }
+
+    .main-content p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    /* Images và videos responsive */
+    .main-content img,
+    .main-content video {
+        border-radius: 10px;
+    }
+
+    /* Nút Tham quan 3D - XUỐNG DƯỚI CÙNG */
+    .nav-item-3d {
+        order: 999;
+        width: 100%;
+        margin-top: 10px;
+        border-top: 1px solid rgba(64, 156, 255, 0.2);
+        padding-top: 10px;
+    }
+
+    .nav-link.tour-3d {
+        margin-left: 0;
+        display: block;
+        text-align: center;
+        font-size: 0.95rem;
+        width: 100%;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(64, 156, 255, 0.2), rgba(64, 156, 255, 0.3));
+        border: 1px solid rgba(64, 156, 255, 0.4);
+    }
+
+    .nav-link.tour-3d i {
+        font-size: 1rem;
+    }
+
+    /* Đảm bảo các nav-item khác hiển thị trước */
+    .navbar-collapse .navbar-nav .nav-item:not(.nav-item-3d) {
+        order: 0;
+    }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 576px) {
+    /* Navbar compact - ĐẢM BẢO NÚT VÀ CHỮ CÙNG HÀNG */
+    .site-navbar {
+        padding: 6px 0;
+    }
+
+    .site-navbar .container {
+        padding-left: 5px;
+        padding-right: 8px;
+        flex-wrap: nowrap;
+    }
+
+    .site-navbar .navbar-brand {
+        font-size: 1.15rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Toggle button compact - CÙNG HÀNG */
+    .sidebar-toggle-btn {
+        width: 38px;
+        height: 38px;
+        margin-right: 8px;
+        margin-left: 0;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+        order: -1;
+    }
+
+    /* Navbar toggler compact */
+    .navbar-toggler {
+        padding: 6px 10px;
+        font-size: 1rem;
+        margin-left: 8px;
+    }
+
+    /* Sidebar compact */
+    .sidebar {
+        max-width: 280px;
+        padding: 80px 15px 20px 15px;
+    }
+
+    .sidebar a {
+        font-size: 0.9rem;
+        padding: 12px 15px;
+    }
+
+    .sidebar a i {
+        font-size: 0.85rem;
+    }
+
+    /* Content */
+    .content-container {
+        padding-top: 75px;
+    }
+
+    .main-content {
+        padding: 15px 10px;
+    }
+
+    .main-content h2 {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .main-content section {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+
+    .main-content p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    /* Images và videos compact */
+    .main-content img,
+    .main-content video {
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Touch optimization */
+@media (hover: none) and (pointer: coarse) {
+    /* Sidebar links touch-friendly */
+    .sidebar a {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+    }
+
+    /* Sidebar toggle button touch-friendly */
+    .sidebar-toggle-btn {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Disable hover effects on touch devices */
+    .sidebar a:hover {
+        transform: none;
+    }
+
+    .sidebar a:active {
+        background: rgba(64, 156, 255, 0.25);
+        transform: scale(0.98);
+    }
+
+    .sidebar-toggle-btn:hover {
+        transform: none;
+    }
+
+    .sidebar-toggle-btn:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 992px) and (orientation: landscape) {
+    .content-container {
+        padding-top: 70px;
+    }
+
+    .sidebar {
+        padding-top: 80px;
+    }
+
+    .sidebar-toggle-btn {
+        top: 10px;
+    }
+}/* =============================
+   Ghi chú nội dung: Thuyết kiến tạo mảng và cấu trúc Trái Đất
+   (Lưu dưới dạng comment để tham chiếu nội dung, không ảnh hưởng đến CSS)
+   ============================= */
+/*
+Thuyết kiến tạo mảng và cấu trúc Trái Đất
+1. Nguồn gốc hình thành Trái Đất
+Theo giả thuyết học thuyết tinh vân, hệ Mặt Trời – bao gồm Trái Đất – hình thành cách đây khoảng 4,6 tỷ năm từ một đám mây khí bụi quay quanh tâm Ngân Hà. Đám mây khí ban đầu gồm chủ yếu hydro, helium và các nguyên tố nặng sinh ra từ siêu tân tinh sau vụ nổ Big Bang ~13,7 tỷ năm trước. Trái Đất khởi nguyên có thể đồng chất hay phân lớp từ đầu; có hai lý thuyết chính giải thích phân bố các lớp: thuyết bồi tụ đồng hình cho rằng Trái Đất ban đầu đồng nhất và nóng chảy, sắt–nicken chìm xuống tạo thành lõi, còn silicat nhẹ nổi lên thành manti và vỏ. Trong khi đó, thuyết bồi tụ dị hình cho rằng các nguyên tố đông đặc theo thứ tự từ nhân (Fe–Ni) đầu tiên, tiếp theo manti, và lớp vỏ đông lạnh cuối cùng khi tinh vân nguội dần. Những lý thuyết này giúp giải thích tại sao Trái Đất có cấu trúc phân tầng (lõi, manti, vỏ) hiện nay.
+2. Vỏ Trái Đất và vật liệu cấu tạo vỏ
+2.1 Đặc điểm vỏ Trái Đất
+Lớp vỏ (lớp vỏ Trái Đất) là lớp ngoài cùng, rất mỏng so với bán kính Trái Đất. Độ dày trung bình khoảng 5–70 km: mỏng nhất là dưới đáy đại dương (~5–10 km), dày nhất là ở các vùng núi trẻ trên lục địa (~60–70 km). Về thể tích, vỏ chiếm khoảng 1% Trái Đất và chỉ ~0,5% khối lượng. Trái Đất có hai kiểu vỏ cơ bản: vỏ đại dương và vỏ lục địa, khác nhau về thành phần và tính chất. Vỏ đại dương chủ yếu gồm đá bazan (kiểu bazan mafic, tỷ trọng lớn), có độ dày mỏng (vài km). Ngược lại, vỏ lục địa chủ yếu gồm đá granit (kiểu felsic, tỷ trọng thấp), dày hơn nhiều (trung bình ~35 km, có thể tới 70 km ở đới núi). Tóm lại, vỏ lục địa dày và nhẹ hơn, trong khi vỏ đại dương mỏng và nặng hơn. Chuyển động của các mảng kiến tạo nằm trong thạch quyển (gồm vỏ và phần thượng của manti), trượt trên tầng manti bên dưới (quyển mềm).
+2.2 Vật liệu cấu tạo vỏ Trái Đất
+Vật liệu chính cấu tạo nên vỏ Trái Đất là khoáng vật silicat, gồm các khoáng chứa silic (Si) và oxy (O). Khoáng vật silicat chiếm khoảng 90% lớp vỏ. Theo số liệu địa hóa, bốn nguyên tố chiếm 88,1% khối lượng vỏ Trái Đất là Oxy (46%), Silic (28%), Nhôm (~8%) và Sắt (~6%). Nói cách khác, thành phần hóa học vỏ được gọi là quyển sial (vỏ lục địa chứa Si và Al) và quyển sima (vỏ đại dương chứa Si và Mg). Về loại đá, vỏ Trái Đất gồm chủ yếu là đá xâm nhập và biến chất (khoảng 95%), phần nhỏ còn lại là các đá trầm tích (như đá phiến sét, đá cát, đá vôi). Ví dụ, đại bộ phận vỏ đại dương là đá bazan (mác-ma) có nguồn gốc từ sự nguội đột ngột của dung nham dưới biển, trong khi vỏ lục địa nhiều đá granit, được hình thành chủ yếu qua quá trình kết tinh và biến chất sâu trong vỏ Trái Đất.
+3. Thuyết kiến tạo mảng
+3.1 Nội dung thuyết kiến tạo mảng
+Thuyết kiến tạo mảng khẳng định lớp thạch quyển Trái Đất bị chia thành nhiều mảng cứng (tectonic plates) di chuyển tương đối so với nhau trên lớp manti dẻo bên dưới (astenosphere). Bề dày của các mảng này khoảng ~100 km và bao gồm vỏ đại dương (sima) và vỏ lục địa (sial). Hiện nay người ta xác định khoảng 15 mảng kiến tạo chính cùng nhiều mảng nhỏ trên bề mặt Trái Đất. Chuyển động của các mảng được điều khiển chủ yếu bởi các dòng đối lưu nhiệt trong manti: vật chất nóng dưới sâu trào lên, đẩy các mảng tách xa (tạo ranh giới phân kỳ) và hút mảng lặn xuống các rãnh sâu (tạo ranh giới hội tụ). Theo đó, có ba kiểu ranh giới chính: ranh giới phân kỳ (mảng tách nhau, sinh vỏ mới và sống núi giữa đại dương), ranh giới hội tụ (mảng va đụng hoặc một mảng lặn xuống dưới mảng kia, gây nén đứt tạo đới hút chìm và tạo núi) và ranh giới trượt ngang (mảng trượt sát nhau theo chiều ngang, tạo đứt gãy lớn). Ví dụ, ranh giới phân kỳ ở Đại Tây Dương dẫn đến sự kiến tạo sống núi giữa Đại Tây Dương và tạo vỏ đại dương mới; ranh giới hội tụ giữa mảng Thái Bình Dương và Bắc Mỹ sinh ra vành đai núi lửa Đông Á (dãy núi lửa Nhật Bản); ranh giới trượt ngang như đứt gãy San Andreas tại California gây ra các trận động đất mạnh. Nhìn chung, thuyết kiến tạo mảng giải thích nguồn gốc và phân bố của hầu hết các hiện tượng địa chất trên Trái Đất.
+3.2 Nguyên nhân hình thành núi trẻ, động đất, núi lửa
+Theo thuyết kiến tạo mảng, các dãy núi trẻ thường hình thành ở các ranh giới hội tụ. Ví dụ, khi hai mảng đại lục va chạm (như mảng Ấn Độ va mảng Âu-Á), vỏ bị nén ép tạo thành dãy Himalaya; khi mảng đại dương va mảng lục địa (như mảng Nazca lặn xuống dưới mảng Nam Mỹ), sự hút chìm này sinh ra cung đảo núi lửa (dãy Andes) và xây dựng núi trẻ (như đỉnh Ojos del Salado cao nhất Nam Mỹ). Các dãy núi lửa (vành đai núi lửa) chủ yếu nằm dọc theo ranh giới mảng, nhất là đới hút chìm (vành đai lửa Thái Bình Dương với hàng trăm núi lửa, gồm ~425 núi lửa hoành hành quanh rìa Thái Bình Dương). Động đất tập trung nhiều ở các đới đứt gãy và đới va chạm giữa các mảng – thống kê cho thấy >80% trận động đất và núi lửa trên thế giới xảy ra dọc theo các ranh giới mảng. Nói chung, các hiện tượng như tạo núi, hoạt động núi lửa và động đất là hậu quả trực tiếp của chuyển động tương đối giữa các mảng kiến tạo, thông qua cơ chế tách giãn tại sống núi giữa đại dương (sinh núi mới và núi lửa biển), và hút chìm tạo núi, cung đảo núi lửa, đứt gãy tại rìa hội tụ. 
+4. Bằng chứng và dẫn chứng cho thuyết kiến tạo mảng
+Nhiều bằng chứng địa chất ủng hộ học thuyết kiến tạo mảng. Một trong những phát hiện quan trọng là dải vằn từ tính đối xứng hai bên sống núi giữa đại dương: đáy biển mới sinh tại sống núi chứa nhiễm từ đặc trưng (theo từ trường Trái Đất tại thời điểm đó), ghi lại các lần đảo cực; việc khảo sát từ trường đáy biển thấy các dải xen kẽ bình thường–đảo trái này lan dài hàng chục nghìn km song song sống núi. Giải thích hợp lý là đáy đại dương liên tục mở rộng từ trung tâm sống núi và “sổ sách từ tính” này hỗ trợ giả thuyết giãn tách đáy biển. Ngoài ra, các phép đo địa chất cũng cho thấy đáy đại dương chủ yếu là đá bazan mác-ma (đá đen giàu Fe, Mg) với độ dày mỏng (~5–10 km), trong khi đá lục địa chủ yếu là đá granit (trắng/hồng, giàu Si, Al) với độ dày lớn (~30–70 km). Điều này được phát hiện từ thập niên 1940 khi Ewing và cộng sự đo đạc địa vật lý cho thấy lục địa và đại dương không trao đổi vỏ trực tiếp; đáy biển được cấu tạo bởi bazan, và vỏ đại dương rất mỏng so với vỏ lục địa.
+Bằng chứng khác liên quan đến phân bố hóa thạch và cấu tạo địa chất trên các lục địa tách rời. Nhiều lớp đá và hóa thạch ở ven bờ Nam Mỹ, Phi, Ấn Độ, Úc, Nam Cực rất giống nhau, chứng tỏ các khu vực này từng gắn kết (siêu lục địa cổ), như dãy Caledonides ở Âu châu rất tương đồng với dãy Appalachians ở Bắc Mỹ. Sự tương đồng về thạch học và địa tầng này chỉ hợp lý nếu các mảng trước kia tiếp giáp rồi tách rời. Cuối cùng, phân bố động đất và núi lửa toàn cầu tập trung dọc theo ranh giới mảng – việc vẽ bản đồ xảy ra động đất, núi lửa toàn cầu cho thấy hầu như trùng với đường mảng (sống núi đại dương, rãnh sâu, đứt gãy). Tất cả những bằng chứng này (vằn từ đáy biển, thành phần vỏ khác biệt, hóa thạch và sự kiện địa chất liên tục, phân bố động-đất lửa) đều nhất quán với mô hình kiến tạo mảng và củng cố thuyết kiến tạo mảng.
+5. Chu kỳ kiến tạo mảng và siêu lục địa (mở rộng)
+Học thuyết kiến tạo mảng cũng giải thích lịch sử hình thành – phân rã các siêu lục địa theo chu kỳ Wilson. Theo đó, các lục địa từng hợp nhất thành những khối lớn (ví dụ siêu lục địa Pangaea) rồi lại tách rời, tạo liên tục đại dương mới và hủy vỏ cũ. Thực tế cho thấy Nam Mỹ, Phi, Ấn Độ, Úc… hiện nay là mảnh vụn của một siêu lục địa chung (Pangaea) tồn tại cách đây khoảng 225 triệu năm. Trước Pangaea còn có các siêu lục địa cổ hơn (ví dụ Rodinia khoảng 1 tỷ năm trước). Trong chu kỳ Wilson, lục địa tách giãn, hợp nhất và lại tách giãn theo thời gian địa chất; ví dụ Đại Tây Dương đang mở rộng (các mảng dịch chuyển ra xa sống núi giữa Đại Tây Dương), trong khi Thái Bình Dương đang co lại (các đới hút chìm xâu vào nhau). Hiểu biết về chu kỳ này giúp giải thích về hướng di chuyển của các mảng (như mảng Ấn Độ di chuyển về phía bắc tạo Himalaya) và dự báo tương lai: hàng trăm triệu năm sau, các lục địa có thể tiếp tục hội tụ thành siêu lục địa mới. Nghiên cứu kiến tạo mảng vì vậy không chỉ giải thích quá khứ địa chất Trái Đất, mà còn đóng vai trò quan trọng trong đánh giá tài nguyên (dầu, khoáng sản thường phân bố theo bậc mảng) và dự báo thiên tai (động đất, phun trào) liên quan đến vận động mảng.
+Nguồn tham khảo: Kết quả nghiên cứu địa chất hiện đại cho thấy Trái Đất hình thành ~4,6 tỷ năm trước từ tinh vân Mặt Trời; vỏ Trái Đất bao gồm 2 lớp chính là vỏ lục địa và vỏ đại dương (dày ~5–70 km); khoáng vật silicat chiếm ~90% thành phần vỏ và O, Si, Al, Fe chiếm ~88% khối lượng vỏ. Thuyết kiến tạo mảng (hình thành cuối thập niên 1960) cho rằng thạch quyển bị chia thành nhiều mảng di động, cơ sở giải thích rõ ràng các hiện tượng địa chất như tạo núi, động đất, núi lửa. Bằng chứng từ vằn từ đáy biển, thành phần địa hóa khác biệt giữa lục địa và đáy đại dương, cùng phân bố hóa thạch/sự kiện địa chất tương ứng giữa các mảng ủng hộ học thuyết này. Các chu kỳ hợp nhất – phân rã lục địa (Pangaea, chu kỳ Wilson) cũng được lý giải nhờ thuyết này. 
+________________________________________
+Sự hình thành Trái Đất – Bách khoa Toàn thư Việt Nam
+History of Earth - Wikipedia
+Vỏ Trái Đất – Wikipedia tiếng Việt
+Which elements make up most of the Earth's crust? | World Economic Forum
+Danh sách mảng kiến tạo – Wikipedia tiếng Việt
+Khoáng vật silicat – Wikipedia tiếng Việt
+volcanoes.usgs.gov
+Kiến tạo mảng – Wikipedia tiếng Việt
+Plate Tectonics and Volcanic Activity
+*/
+

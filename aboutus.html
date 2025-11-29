@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Về Chúng Tôi - Các Chuyển Động Của Trái Đất</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chatbot Widget CSS -->
+    <link rel="stylesheet" href="chatbot-widget.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2332 0%, #2d3a52 50%, #1e2938 100%);
+            color: #e8e8e8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        /* Navbar với hiệu ứng giống style.css */
+        
+        .site-navbar {
+            background: rgba(26, 35, 50, 0.90);
+            backdrop-filter: blur(10px) saturate(120%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid rgba(64, 156, 255, 0.2);
+        }
+        
+        .site-navbar.scrolled {
+            background: rgba(26, 35, 50, 0.98);
+            backdrop-filter: blur(15px) saturate(140%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .site-navbar:hover {
+            background: rgba(30, 41, 56, 0.95);
+            border-bottom-color: rgba(64, 156, 255, 0.25);
+        }
+        
+        .site-name {
+            font-weight: 700;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #67d7ff, #409cff, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        
+        .site-name:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+        
+        .site-navbar .nav-link {
+            position: relative;
+            color: #e8e8e8;
+            transition: all 0.3s ease;
+            padding: 8px 16px !important;
+        }
+        
+        .site-navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #409cff, #67d7ff);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .site-navbar .nav-link:hover {
+            color: #67d7ff;
+            transform: translateY(-2px);
+        }
+        
+        .site-navbar .nav-link:hover::after {
+            width: 80%;
+        }
+        /* Dropdown styling */
+        
+        .dropdown-menu {
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid rgba(64, 156, 255, 0.3);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .dropdown-menu a {
+            color: #e8e8e8;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 10px 20px;
+        }
+        
+        .dropdown-menu a::before {
+            content: '→';
+            position: absolute;
+            left: 8px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            color: #409cff;
+        }
+        
+        .dropdown-menu a:hover {
+            background: rgba(64, 156, 255, 0.15);
+            color: #409cff;
+            padding-left: 30px;
+        }
+        
+        .dropdown-menu a:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .dropdown-menu.fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-menu.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Style cho nút Tham quan 3D */
+        .nav-link.tour-3d {
+            background: linear-gradient(135deg, rgba(64, 156, 255, 0.15), rgba(64, 156, 255, 0.25));
+            border-radius: 8px;
+            padding: 8px 16px !important;
+            margin-left: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(64, 156, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link.tour-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-link.tour-3d:hover::before {
+            left: 100%;
+        }
+
+        .nav-link.tour-3d:hover {
+            background: linear-gradient(135deg, rgba(64, 156, 255, 0.25), rgba(64, 156, 255, 0.35));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(64, 156, 255, 0.3);
+            border-color: rgba(64, 156, 255, 0.5);
+        }
+
+        .nav-link.tour-3d i {
+            color: #409cff;
+            animation: vrPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes vrPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Hero Section với animation */
+        
+        .hero-section {
+            height: 100vh;
+            background: transparent;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .hero-section::after {
+            display: none;
+        }
+        
+        .hero-section>div {
+            position: relative;
+            z-index: 2;
+            animation: heroContentFadeUp 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes heroContentFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .hero-subtitle {
+            color: #67d7ff;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 400;
+            animation: fadeInDown 1s ease-out 0.3s both;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Aurora Text */
+        
+        .aurora-text {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 800;
+            letter-spacing: 0px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #ffffff, #67d7ff, #409cff, #2563eb, #409cff, #67d7ff);
+            background-size: 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: auroraShiftLux 10s ease infinite, scaleIn 1s ease-out 0.4s both;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 90vw;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes auroraShiftLux {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        /* About Section */
+        
+        .about-section {
+            background: transparent;
+            color: #e8e8e8;
+            padding: 100px 8%;
+            overflow: hidden;
+        }
+        
+        .about-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+        
+        .about-left {
+            flex: 1;
+            min-width: 300px;
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .about-left h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #67d7ff;
+            font-weight: 700;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .about-left p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 22px;
+            color: #d0d0d0;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .about-right {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            animation: slideInRight 1s ease-out 0.2s both;
+        }
+        /* Swiper Container với hiệu ứng */
+        
+        .tranding-slider {
+            height: 450px;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        .tranding-slide {
+            width: 400px;
+            height: 350px;
+            position: relative;
+            transition: transform 0.6s cubic-bezier(.2, .8, .2, 1), box-shadow 0.6s;
+        }
+        
+        .tranding-slide-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(64, 156, 255, 0.25);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(64, 156, 255, 0.2);
+            transition: all 0.6s ease;
+        }
+        
+        .tranding-slide-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease, filter 0.4s;
+        }
+        
+        .tranding-slide:hover .tranding-slide-img {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(64, 156, 255, 0.5);
+            border-color: #409cff;
+        }
+        
+        .tranding-slide:hover .tranding-slide-img img {
+            transform: scale(1.1);
+            filter: brightness(1.15) saturate(1.1);
+        }
+        /* Swiper Navigation với hiệu ứng vàng */
+        
+        .swiper-button-prev,
+        .swiper-button-next {
+            color: #0a0a0a !important;
+            background: linear-gradient(135deg, #409cff, #2563eb) !important;
+            width: 60px !important;
+            height: 60px !important;
+            border-radius: 50% !important;
+            border: 2px solid #409cff !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 0 8px 25px rgba(64, 156, 255, 0.4) !important;
+        }
+        
+        .swiper-button-prev:hover,
+        .swiper-button-next:hover {
+            background: linear-gradient(135deg, #67d7ff, #409cff) !important;
+            border-color: #67d7ff !important;
+            transform: scale(1.18) !important;
+            box-shadow: 0 15px 45px rgba(64, 156, 255, 0.7) !important;
+        }
+        
+        .swiper-button-prev:active,
+        .swiper-button-next:active {
+            transform: scale(1.05) !important;
+        }
+        
+        .swiper-button-prev::after,
+        .swiper-button-next::after {
+            font-size: 20px !important;
+            font-weight: bold !important;
+        }
+        /* Swiper Pagination */
+        
+        .swiper-pagination-bullet {
+            background: #409cff !important;
+            opacity: 0.5 !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .swiper-pagination-bullet-active {
+            opacity: 1 !important;
+            background: #409cff !important;
+            transform: scale(1.3) !important;
+        }
+        /* Footer với animations */
+        
+        .site-footer {
+            background: #0a0a0a;
+            color: #d0d0d0;
+            padding: 80px 8%;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            border-top: 2px solid rgba(64, 156, 255, 0.25);
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        
+        .footer-container>div {
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+        
+        .footer-container>div:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        
+        .footer-container>div:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .footer-container>div:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        
+        .footer-container>div:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+        
+        .footer-logo {
+            width: 80px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            filter: drop-shadow(0 0 15px rgba(64, 156, 255, 0.4));
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+        
+        .footer-logo:hover {
+            transform: scale(1.15) rotate(8deg);
+            filter: drop-shadow(0 0 25px rgba(64, 156, 255, 0.7));
+        }
+        
+        .footer-about {
+            max-width: 350px;
+        }
+        
+        .footer-about p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #b8b8b8;
+            margin-bottom: 25px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .footer-social a {
+            color: #409cff;
+            margin-right: 15px;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .footer-social a:hover {
+            color: #67d7ff;
+            transform: scale(1.2) translateY(-5px) rotate(5deg);
+        }
+        
+        .footer-links h4 {
+            color: #67d7ff;
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .footer-links a {
+            display: block;
+            color: #a8a8a8;
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .footer-links a::before {
+            content: '▸';
+            position: absolute;
+            left: -15px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #409cff;
+        }
+        
+        .footer-links a:hover {
+            color: #67d7ff;
+            padding-left: 15px;
+        }
+        
+        .footer-links a:hover::before {
+            opacity: 1;
+            left: 0;
+        }
+        
+        .footer-divider {
+            border: none;
+            border-top: 1px solid rgba(64, 156, 255, 0.25);
+            margin: 40px 0;
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .footer-bottom p {
+            font-size: 0.95rem;
+            color: #888;
+        }
+        
+        .back-to-top {
+            background: linear-gradient(135deg, #409cff, #2563eb);
+            color: #0a0a0a;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 20px rgba(64, 156, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .back-to-top::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+        
+        .back-to-top:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #67d7ff, #409cff);
+            transform: translateY(-8px) rotate(360deg);
+            box-shadow: 0 12px 40px rgba(64, 156, 255, 0.6);
+        }
+        
+        .back-to-top:active {
+            transform: translateY(-4px) scale(0.95);
+        }
+        
+        .wave-text {
+            display: inline-block;
+            position: relative;
+            animation: waveMoveLux 3s infinite linear;
+            background: linear-gradient(90deg, #67d7ff, #409cff, #2563eb, #409cff, #67d7ff, #409cff, #2563eb, #409cff, #67d7ff);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        @keyframes waveMoveLux {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        /* Reveal Animation */
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Responsive */
+        
+        /* =============================
+           MOBILE OPTIMIZATION - ABOUTUS
+           ============================= */
+
+        /* Tablet */
+        @media (max-width: 992px) {
+            /* Hero section */
+            .hero-section {
+                background-attachment: scroll;
+                padding: 140px 20px 80px;
+                min-height: 600px;
+            }
+
+            .aurora-text {
+                font-size: clamp(2.5rem, 7vw, 4rem);
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+                letter-spacing: 2px;
+            }
+
+            /* About sections - ĐỒNG NHẤT CHO TẤT CẢ */
+            .about-section {
+                padding: 70px 5%;
+                background-attachment: scroll !important;
+            }
+
+            /* Override inline styles - QUAN TRỌNG */
+            .about-container {
+                flex-direction: column !important;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .about-left {
+                max-width: 100%;
+                order: 1;
+            }
+
+            .about-right {
+                order: 2;
+                width: 100%;
+                max-width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .about-left h2 {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .about-left p {
+                font-size: 1.05rem;
+                text-align: center;
+            }
+
+            /* Swiper carousel - ĐỒNG NHẤT */
+            .tranding-slider {
+                height: 400px;
+                width: 100%;
+                max-width: 600px;
+            }
+
+            .tranding-slide {
+                width: 320px;
+                height: 280px;
+            }
+
+            .swiper-button-prev,
+            .swiper-button-next {
+                width: 55px !important;
+                height: 55px !important;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            /* Navbar mobile - TỐI ƯU LAYOUT */
+            .site-navbar {
+                padding: 8px 0;
+            }
+
+            .site-navbar .container {
+                padding-left: 15px;
+                padding-right: 15px;
+                display: flex;
+                align-items: center;
+                position: relative;
+                justify-content: space-between;
+            }
+
+            /* Spacer để giữ khoảng cách */
+            .site-navbar .container::before {
+                content: '';
+                flex: 1 1 auto;
+                order: 1;
+            }
+
+            .site-name {
+                font-size: 1.25rem;
+                flex-shrink: 0;
+                white-space: nowrap;
+                overflow: visible;
+                order: 0;
+            }
+
+            /* Navbar toggler - CỐ ĐỊNH BÊN PHẢI */
+            .navbar-toggler {
+                flex-shrink: 0;
+                padding: 6px 10px;
+                border-color: rgba(64, 156, 255, 0.5);
+                order: 2;
+                position: relative;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 6px;
+            }
+
+            .navbar-toggler:hover {
+                background: rgba(64, 156, 255, 0.1);
+                border-color: rgba(64, 156, 255, 0.8);
+                transform: scale(1.05);
+            }
+
+            .navbar-toggler:focus {
+                box-shadow: 0 0 0 3px rgba(64, 156, 255, 0.2);
+                outline: none;
+            }
+
+            .navbar-toggler[aria-expanded="true"] {
+                background: rgba(64, 156, 255, 0.15);
+                border-color: #409cff;
+            }
+
+            .navbar-toggler-icon {
+                width: 20px;
+                height: 20px;
+                transition: transform 0.3s ease;
+                display: inline-block;
+            }
+
+            /* Rotate icon khi navbar mở */
+            .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+                transform: rotate(90deg);
+            }
+
+            /* Navbar collapse - absolute với animation mượt mà */
+            .navbar-collapse {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(15px);
+                z-index: 1000;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                pointer-events: none;
+            }
+
+            .navbar-collapse.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .navbar-collapse.collapsing {
+                display: block;
+                transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            /* Animation cho nav items */
+            .navbar-collapse.show .nav-item {
+                animation: slideInDown 0.4s ease backwards;
+            }
+
+            .navbar-collapse.show .nav-item:nth-child(1) {
+                animation-delay: 0.05s;
+            }
+
+            .navbar-collapse.show .nav-item:nth-child(2) {
+                animation-delay: 0.1s;
+            }
+
+            .navbar-collapse.show .navbar-nav:last-child .nav-item:nth-child(1) {
+                animation-delay: 0.15s;
+            }
+
+            .navbar-collapse.show .navbar-nav:last-child .nav-item:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            @keyframes slideInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-15px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Nút Tham quan 3D - XUỐNG DƯỚI CÙNG */
+            .nav-item-3d {
+                order: 999;
+                width: 100%;
+                margin-top: 10px;
+                border-top: 1px solid rgba(64, 156, 255, 0.2);
+                padding-top: 10px;
+            }
+
+            .nav-link.tour-3d {
+                margin-left: 0;
+                display: block;
+                text-align: center;
+                font-size: 0.95rem;
+                width: 100%;
+                border-radius: 8px;
+                background: linear-gradient(135deg, rgba(64, 156, 255, 0.2), rgba(64, 156, 255, 0.3));
+                border: 1px solid rgba(64, 156, 255, 0.4);
+            }
+
+            .nav-link.tour-3d i {
+                font-size: 1rem;
+            }
+
+            /* Đảm bảo các nav-item khác hiển thị trước */
+            .navbar-collapse .navbar-nav .nav-item:not(.nav-item-3d) {
+                order: 0;
+            }
+
+            .site-navbar .nav-link {
+                padding: 10px 16px !important;
+                font-size: 0.95rem;
+            }
+
+            /* Dropdown toggle - arrow nằm ngang */
+            .site-navbar .dropdown-toggle::after {
+                display: inline-block;
+                margin-left: 0.5em;
+                vertical-align: middle;
+            }
+
+            .dropdown-menu {
+                background: rgba(10, 10, 10, 0.98);
+                border: none;
+                margin-top: 5px;
+            }
+
+            .dropdown-menu a {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+
+            /* Hero mobile */
+            .hero-section {
+                padding: 120px 15px 60px;
+                min-height: 550px;
+            }
+
+            .aurora-text {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+                padding: 0 10px;
+                line-height: 1.2;
+            }
+
+            .hero-subtitle {
+                font-size: 0.85rem;
+                letter-spacing: 1.5px;
+            }
+
+            /* About sections - ĐỒNG NHẤT */
+            .about-section {
+                padding: 60px 5%;
+            }
+
+            /* Override inline styles - QUAN TRỌNG */
+            .about-container {
+                flex-direction: column !important;
+                gap: 35px;
+                text-align: center;
+            }
+
+            .about-left {
+                max-width: 100%;
+                order: 1;
+            }
+
+            .about-right {
+                order: 2;
+                width: 100%;
+                max-width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .about-left h2 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .about-left p {
+                font-size: 1rem;
+                line-height: 1.7;
+                margin-bottom: 18px;
+                text-align: center;
+            }
+
+            /* Swiper carousel mobile - ĐỒNG NHẤT */
+            .tranding-slider {
+                height: 350px;
+                padding: 30px 0;
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .tranding-slide {
+                width: 280px;
+                height: 250px;
+            }
+
+            .swiper-button-prev,
+            .swiper-button-next {
+                width: 50px !important;
+                height: 50px !important;
+                font-size: 18px;
+            }
+
+            .swiper-button-prev::after,
+            .swiper-button-next::after {
+                font-size: 18px !important;
+            }
+
+            /* Footer mobile */
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+                gap: 30px;
+            }
+
+            .footer-about {
+                max-width: 100%;
+            }
+
+            .footer-about p {
+                max-width: 100%;
+            }
+
+            .footer-links {
+                width: 100%;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+
+        /* Mobile nhỏ */
+        @media (max-width: 576px) {
+            /* Navbar compact - TỐI ƯU */
+            .site-navbar {
+                padding: 6px 0;
+            }
+
+            .site-navbar .container {
+                padding: 0 8px;
+                flex-wrap: nowrap;
+            }
+
+            .site-name {
+                font-size: 1.15rem;
+                letter-spacing: 0.5px;
+            }
+
+            .navbar-toggler {
+                padding: 5px 8px;
+                margin-left: 8px;
+            }
+
+            .navbar-toggler-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            /* Hero compact */
+            .hero-section {
+                padding: 100px 10px 50px;
+                min-height: 500px;
+            }
+
+            .aurora-text {
+                font-size: clamp(1.8rem, 10vw, 2.5rem);
+                line-height: 1.15;
+            }
+
+            .hero-subtitle {
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+            }
+
+            /* About sections - ĐỒNG NHẤT */
+            .about-section {
+                padding: 50px 3%;
+            }
+
+            /* Override inline styles - QUAN TRỌNG */
+            .about-container {
+                flex-direction: column !important;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .about-left {
+                max-width: 100%;
+                order: 1;
+            }
+
+            .about-right {
+                order: 2;
+                width: 100%;
+                max-width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .about-left h2 {
+                font-size: 1.75rem;
+                margin-bottom: 18px;
+                text-align: center;
+            }
+
+            .about-left p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                margin-bottom: 16px;
+                text-align: center;
+            }
+
+            /* Swiper carousel compact - ĐỒNG NHẤT */
+            .tranding-slider {
+                height: 320px;
+                padding: 25px 0;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .tranding-slide {
+                width: 240px;
+                height: 220px;
+            }
+
+            .swiper-button-prev,
+            .swiper-button-next {
+                width: 45px !important;
+                height: 45px !important;
+                font-size: 16px;
+            }
+
+            .swiper-button-prev::after,
+            .swiper-button-next::after {
+                font-size: 16px !important;
+            }
+
+            /* Footer compact */
+            .site-footer {
+                padding: 50px 3%;
+            }
+
+            .footer-about p {
+                font-size: 0.9rem;
+            }
+
+            .footer-social a {
+                font-size: 18px;
+                margin-right: 12px;
+            }
+
+            .footer-links h4 {
+                font-size: 1.1rem;
+            }
+
+            .footer-links a {
+                font-size: 0.9rem;
+            }
+
+            .footer-bottom p {
+                font-size: 0.85rem;
+            }
+
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Landscape mobile optimization */
+        @media (max-width: 992px) and (orientation: landscape) {
+            .hero-section {
+                padding: 100px 20px 60px;
+                min-height: 500px;
+            }
+
+            .about-section {
+                padding: 50px 5%;
+            }
+
+            .about-container {
+                flex-direction: column !important;
+            }
+
+            .tranding-slider {
+                height: 300px;
+            }
+        }
+
+        /* =====================================
+           ĐỒNG NHẤT TẤT CẢ SECTIONS - MOBILE
+           ===================================== */
+
+        @media (max-width: 992px) {
+            /* Đảm bảo tất cả sections có min-height đồng nhất */
+            #gioithieu,
+            #mucdich,
+            #loinhangui {
+                min-height: auto;
+            }
+
+            /* Text color contrast cho tất cả sections */
+            .about-section .about-left h2,
+            .about-section .about-left p {
+                color: inherit;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Container width consistency */
+            .about-section .container {
+                max-width: 100%;
+                padding: 0 15px;
+            }
+
+            /* Swiper wrapper consistency */
+            .about-section .about-right {
+                padding: 0;
+            }
+
+            /* Đảm bảo carousel không bị overflow */
+            .tranding-slider {
+                overflow: hidden;
+            }
+
+            /* Button positioning cho tất cả carousel */
+            .tranding-slider .swiper-button-prev {
+                left: 5px;
+            }
+
+            .tranding-slider .swiper-button-next {
+                right: 5px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            /* Compact spacing cho tất cả sections */
+            #gioithieu .about-left,
+            #mucdich .about-left,
+            #loinhangui .about-left {
+                padding: 0 10px;
+            }
+
+            /* Button positioning compact */
+            .tranding-slider .swiper-button-prev {
+                left: 2px;
+            }
+
+            .tranding-slider .swiper-button-next {
+                right: 2px;
+            }
+        }
+        /* Smooth transitions for all elements */
+        
+        * {
+            scroll-behavior: smooth;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+        
+        p,
+        span,
+        div,
+        a {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top site-navbar">
+        <div class="container">
+            <a class="navbar-brand site-name animate__animated animate__fadeInDown wave-text" href="index.html">Earth Dynamics</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="baiVietDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bài học
+                        </a>
+                        <ul class="dropdown-menu fade-in" aria-labelledby="baiVietDropdown">
+                            <li><a class="dropdown-item" href="baiviet.html#tongquan">Tổng quan</a></li>
+                            <li><a class="dropdown-item" href="baiviet.html#chuyendongquay">Chuyển động quay</a></li>
+                            <li><a class="dropdown-item" href="baiviet.html#chuyendongtinh">Chuyển động tịnh tiến</a></li>
+                            <li><a class="dropdown-item" href="baiviet.html#hequa">Hệ quả địa lý</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="veChungToiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Về chúng tôi
+                        </a>
+                        <ul class="dropdown-menu fade-in" aria-labelledby="veChungToiDropdown">
+                            <li><a class="dropdown-item" href="#gioithieu">Giới thiệu</a></li>
+                            <li><a class="dropdown-item" href="#mucdich">Mục đích</a></li>
+                            <li><a class="dropdown-item" href="#loinhangui">Đôi lời nhắn gửi</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="nguon.html">Tài liệu</a></li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link project-logo" href="#"><i class="fa fa-globe"></i> Địa Lý Việt</a>
+                    </li>
+                    <li class="nav-item nav-item-3d">
+                        <a class="nav-link tour-3d" href="thamquan3d.html">
+                            <i class="fas fa-vr-cardboard me-2"></i>Khám phá 3D
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero section -->
+    <header class="hero-section text-center text-light d-flex align-items-center justify-content-center" id="hero">
+        <div>
+            <h1 class="aurora-text">Về chúng tôi</h1>
+            <p class="hero-subtitle wave-text">Giới thiệu - Mục đích - Đôi lời nhắn gửi</p>
+        </div>
+    </header>
+
+    <!-- Giới thiệu -->
+    <section class="about-section reveal" id="gioithieu">
+        <div class="container about-container">
+            <div class="about-left">
+                <h2 class="aurora-text">Giới thiệu</h2>
+                <p>Các Chuyển Động Của Trái Đất là dự án giáo dục về hệ quả địa lý từ các chuyển động của hành tinh chúng ta, dựa trên bài 5 SGK Địa lý lớp 10. Chúng tôi nhằm cung cấp cái nhìn sâu sắc về cách Trái Đất quay và di chuyển ảnh hưởng đến khí hậu, thời gian và các hiện tượng tự nhiên.</p>
+                <p>Mỗi khía cạnh, mỗi hệ quả đều là một phần quan trọng trong việc hiểu về hành tinh xanh của chúng ta.</p>
+            </div>
+            <div class="about-right">
+                <div class="swiper tranding-slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206062637993_43db384d4d34c8342a8851b27050ee93.jpg" alt="Giới thiệu 1">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206062923023_8fe3bd0a279a9b3eb012898e8ca3026b.jpg" alt="Giới thiệu 2">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206063140406_841a54aa3d0fd3571c6ae99745926223.jpg" alt="Giới thiệu 3">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206063310812_81d70ba430cbe85c09532d1781b2dfac.jpg" alt="Giới thiệu 4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mục đích -->
+    <section class="about-section reveal" id="mucdich" style="background: linear-gradient(180deg, #2b2b2b 0%, #1a1a1a 100%);">
+        <div class="container about-container" style="flex-direction: row-reverse;">
+            <div class="about-left">
+                <h2 class="aurora-text">Mục đích</h2>
+                <p>Chúng tôi hướng đến việc xây dựng một nền tảng giáo dục toàn diện về hệ quả địa lý từ chuyển động quay và tịnh tiến của Trái Đất, giúp học sinh lớp 10 nắm vững kiến thức và áp dụng vào thực tế.</p>
+                <p>Thông qua nội dung hấp dẫn, chúng tôi mong muốn khơi dậy sự quan tâm đến khoa học địa lý và bảo vệ môi trường Trái Đất.</p>
+            </div>
+
+            <div class="about-right">
+                <div class="swiper tranding-slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206388724980_85a2197c28ced81f873b0943a5908e83.jpg" alt="Mục đích 1">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7231070055420_7b5848d295b648d509434d7ea8a1b169.jpg" alt="Mục đích 2">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7231079320585_463d3bb0eac451b6e93cd4e08d2bc83f.jpg" alt="Mục đích 3">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7265959047677_ba95c2eea94af1dcdc924680a9586b20.jpg" alt="Mục đích 4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Đôi lời nhắn gửi -->
+    <section class="about-section reveal" id="loinhangui" style="background: linear-gradient(180deg, #111 0%, #000 100%);">
+        <div class="container about-container">
+            <div class="about-left">
+                <h2 class="aurora-text">Đôi lời nhắn gửi</h2>
+                <p>Cảm ơn bạn đã ghé thăm và học hỏi về các chuyển động của Trái Đất. Mỗi kiến thức bạn tiếp thu đều góp phần nâng cao nhận thức về hành tinh chúng ta đang sống.</p>
+                <p>Hãy cùng chúng tôi khám phá và bảo vệ Trái Đất cho các thế hệ tương lai.</p>
+            </div>
+            <div class="about-right">
+                <div class="swiper tranding-slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7265965646441_1ec231deeb5c7eb2a1d1b612a7ba8556.jpg" alt="Lời nhắn 1">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206062637993_43db384d4d34c8342a8851b27050ee93.jpg" alt="Lời nhắn 2">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206062923023_8fe3bd0a279a9b3eb012898e8ca3026b.jpg" alt="Lời nhắn 3">
+                            </div>
+                        </div>
+                        <div class="swiper-slide tranding-slide">
+                            <div class="tranding-slide-img">
+                                <img src="ảnh/z7206063140406_841a54aa3d0fd3571c6ae99745926223.jpg" alt="Lời nhắn 4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer reveal">
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo-wrapper mb-3">
+                    <i class="fas fa-globe fa-3x" style="color: #409cff;"></i>
+                </div>
+                <h5 class="mb-3" style="color: #409cff;">Earth Dynamics</h5>
+                <p>Khám phá hệ quả địa lý từ các chuyển động của Trái Đất dựa trên chương trình SGK Địa lý lớp 10. Cùng nhau hiểu rõ hơn về hành tinh và bảo vệ môi trường.</p>
+                <div class="footer-social mt-4">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Thông Tin</h4>
+                <a href="#about"><i class="fas fa-angle-right me-2"></i>Về Chúng Tôi</a>
+                <a href="#baiviet"><i class="fas fa-angle-right me-2"></i>Bài Học</a>
+                <a href="#timhieu"><i class="fas fa-angle-right me-2"></i>Tìm Hiểu</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i>Liên Hệ</a>
+            </div>
+
+            <div class="footer-links">
+                <h4>Hỗ Trợ</h4>
+                <a href="#"><i class="fas fa-angle-right me-2"></i>Câu Hỏi Thường Gặp</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i>Điều Khoản Sử Dụng</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i>Chính Sách Bảo Mật</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i>Hướng Dẫn</a>
+            </div>
+
+            <!-- BỎ CỘT KẾT NỐI -->
+        </div>
+
+        <hr class="footer-divider">
+
+        <div class="footer-bottom">
+            <p>
+                <i class="far fa-copyright me-1"></i>2025
+                <span class="wave-text">Earth dynamics website</span>. All rights reserved
+            </p>
+            <a href="#hero" class="back-to-top" title="Về đầu trang">
+                <i class="fas fa-arrow-up"></i>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+    <script>
+        // Hàm scroll section vào giữa màn hình
+        function scrollToCenter(targetSection) {
+            if (targetSection) {
+                const targetPosition = targetSection.offsetTop;
+                const windowHeight = window.innerHeight;
+                const sectionHeight = targetSection.offsetHeight;
+
+                // Tính toán vị trí để section nằm ở giữa màn hình
+                const scrollToPosition = targetPosition - (windowHeight / 2) + (sectionHeight / 2);
+
+                window.scrollTo({
+                    top: scrollToPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Xử lý khi trang được load với hash (ví dụ: aboutus.html#gioithieu)
+        window.addEventListener('load', () => {
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                // Đợi một chút để đảm bảo trang đã load hoàn toàn
+                setTimeout(() => {
+                    scrollToCenter(targetSection);
+                }, 100);
+            }
+        });
+
+        // Xử lý click vào link navbar dropdown để scroll mục vào giữa màn hình
+        const dropdownLinks = document.querySelectorAll('.dropdown-menu a[href^="#"]');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Ngăn hành vi mặc định
+
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                scrollToCenter(targetSection);
+            });
+        });
+
+        // Scroll Reveal Animation
+        const reveals = document.querySelectorAll('.reveal');
+
+        function handleScroll() {
+            for (const el of reveals) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 80 && rect.bottom > 0) {
+                    el.classList.add('in-view');
+                }
+            }
+        }
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        // Dropdown hover effect
+        document.querySelectorAll('.navbar .dropdown').forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                const toggle = dropdown.querySelector('[data-bs-toggle="dropdown"]');
+                const bsDropdown = bootstrap.Dropdown.getOrCreateInstance(toggle);
+                bsDropdown.show();
+            });
+            dropdown.addEventListener('mouseleave', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                const toggle = dropdown.querySelector('[data-bs-toggle="dropdown"]');
+                const bsDropdown = bootstrap.Dropdown.getOrCreateInstance(toggle);
+                bsDropdown.hide();
+            });
+        });
+
+        // Initialize Swiper for all carousels
+        const swipers = document.querySelectorAll('.tranding-slider');
+        swipers.forEach(slider => {
+            new Swiper(slider, {
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                loop: true,
+                slidesPerView: 'auto',
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 2.5,
+                },
+                pagination: {
+                    el: slider.querySelector('.swiper-pagination'),
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: slider.querySelector('.swiper-button-next'),
+                    prevEl: slider.querySelector('.swiper-button-prev'),
+                },
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                }
+            });
+        });
+
+        // Back to top button
+        document.querySelector('.back-to-top').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+
+    <!-- Three.js for 3D Earth Background -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r160/examples/js/controls/OrbitControls.js"></script>
+    <!-- Animated Earth Background with Day/Night -->
+    <script src="earth-background-animated.js?v=2024anim"></script>
+
+  <!-- Chatbot Widget -->
+  <script src="chatbot-widget.js"></script>
+</body>
+
+</html>

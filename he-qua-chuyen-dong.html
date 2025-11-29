@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ quả của chuyển động Trái Đất - Earth Motion Geography</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="baiviet.css">
+  <link rel="stylesheet" href="chatbot-widget.css">
+  <style>
+    /* TOC aesthetics */
+    #toc {
+      background: rgba(30, 41, 59, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(103,215,255,0.3);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 
+                  0 0 0 1px rgba(103,215,255,0.1) inset;
+    }
+    #toc h5 {
+      margin-bottom: 16px;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.35rem;
+      background: linear-gradient(135deg, #67d7ff, #409cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #toc ul { list-style: none; padding-left: 0; margin: 0; }
+    #toc > ul > li { margin-bottom: 10px; }
+    #toc li ul { margin-top: 8px; margin-left: 18px; }
+
+    #toc a {
+      display: inline-block;
+      color: #f0f0f0;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.05rem;
+      padding: 4px 0;
+      border-left: 3px solid transparent;
+      padding-left: 10px;
+      transition: all .2s ease;
+    }
+    #toc a:hover {
+      color: #ffffff;
+      border-left-color: #67d7ff;
+      transform: translateX(3px);
+      text-shadow: 0 0 8px rgba(103,215,255,0.4);
+    }
+
+    /* Back-to-TOC button */
+    .toc-back-btn {
+      background: linear-gradient(135deg, #409cff, #67d7ff);
+      color: #fff;
+      border: none;
+      border-radius: 9999px;
+      padding: 8px 16px;
+      line-height: 1.2;
+      font-weight: 500;
+      box-shadow: 0 8px 20px rgba(64,156,255,0.4);
+      transition: all 0.3s ease;
+    }
+    .toc-back-btn:hover { 
+      filter: brightness(1.15); 
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(103,215,255,0.5);
+      transform: translateY(-2px);
+    }
+    .toc-back-btn i { opacity: 1; }
+
+    /* Image aesthetics under each section */
+    .img-fluid.rounded { 
+      border-radius: 12px !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .img-fluid.rounded:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 30px rgba(103,215,255,0.2);
+    }
+
+    /* Article intro box */
+    .article-intro {
+      background: linear-gradient(135deg, rgba(64,156,255,0.15), rgba(103,215,255,0.08));
+      border: 1px solid rgba(103,215,255,0.3);
+      border-left: 4px solid #67d7ff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .article-intro h3 {
+      color: #67d7ff !important;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      border: none !important;
+      padding-left: 0 !important;
+    }
+    .article-intro p {
+      color: #e0f2ff;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    /* Info cards */
+    .info-card {
+      background: rgba(30,41,59,0.95);
+      border: 1px solid rgba(103,215,255,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
+      transition: all 0.3s ease;
+    }
+    .info-card:hover {
+      border-color: rgba(103,215,255,0.4);
+      box-shadow: 0 8px 24px rgba(103,215,255,0.15);
+      transform: translateY(-2px);
+    }
+    .info-card h4 {
+      color: #67d7ff !important;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .info-card p {
+      color: #d0e7ff;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    /* Quote box */
+    .quote-box {
+      background: linear-gradient(135deg, rgba(103,215,255,0.1), rgba(64,156,255,0.05));
+      border-left: 4px solid #67d7ff;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 20px 0;
+      font-style: italic;
+      color: #e0f2ff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .quote-box i {
+      color: #67d7ff;
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+
+    /* Reading progress bar */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: linear-gradient(90deg, #409cff, #67d7ff);
+      z-index: 9999;
+      transition: width 0.1s ease;
+    }
+
+    /* Section divider */
+    .section-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #67d7ff, transparent);
+      margin: 40px 0;
+      border: none;
+    }
+
+    /* Key points list */
+    .key-points {
+      background: rgba(30,41,59,0.9);
+      border: 1px solid rgba(103,215,255,0.25);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .key-points h4 {
+      color: #67d7ff !important;
+      font-size: 1.15rem;
+      margin-bottom: 12px;
+    }
+    .key-points ul li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 10px;
+    }
+    .key-points ul li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #67d7ff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top site-navbar">
+    <div class="container">
+      <a class="navbar-brand site-name" href="index.html"><i class="fas fa-globe me-2"></i>Địa Lý Trái Đất</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-3">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Bài viết</a>
+            <ul class="dropdown-menu fade-in">
+              <li><a class="dropdown-item" href="he-qua-chuyen-dong.html"><i class="fas fa-globe-americas me-2"></i>Hệ quả của chuyển động Trái Đất</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item nav-item-3d">
+            <a class="nav-link tour-3d" href="thamquan3d.html"><i class="fas fa-globe-americas me-2"></i>Mô phỏng 3D</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Hệ quả của chuyển động Trái Đất</h1>
+      <p class="lead">Tự quay quanh trục và quay quanh Mặt Trời tạo nên ngày – đêm, các mùa và nhiều hiện tượng địa lý quan trọng</p>
+    </div>
+  </section>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress" id="readingProgress"></div>
+
+  <div class="content-container">
+    <main class="main-content container">
+      
+      <!-- Article Intro -->
+      <div class="article-intro">
+        <h3><i class="fas fa-info-circle me-2"></i>Giới thiệu bài viết</h3>
+        <p>Bài viết này khám phá chi tiết hai chuyển động quan trọng của Trái Đất và những hệ quả địa lý của chúng. Từ sự luân phiên ngày đêm đến sự thay đổi của các mùa, những hiện tượng này định hình nền tảng cho sự sống trên hành tinh chúng ta.</p>
+      </div>
+
+      <!-- Mục lục -->
+      <nav id="toc" class="mb-4">
+        <h5 class="mb-2">Mục lục</h5>
+        <ul>
+          <li><a href="#loi-mo">Lời mở</a></li>
+          <li><a href="#bang-thuat-ngu">Bảng thuật ngữ</a></li>
+          <li><a href="#he-qua-tu-quay">I. Hệ quả của chuyển động tự quay quanh trục</a>
+            <ul>
+              <li><a href="#su-luan-phien-ngay-dem">Sự luân phiên ngày đêm</a></li>
+              <li><a href="#he-thong-mui-gio">Hệ thống múi giờ trên Trái Đất</a></li>
+              <li><a href="#luc-coriolis">Lực Coriolis</a></li>
+              <li><a href="#dai-gio-chinh">Hình thành các đai gió chính (Tín phong, Tây ôn đới, Đông cực)</a></li>
+              <li><a href="#dong-bien-lech-huong">Lệch hướng dòng biển và vòng xoáy đại dương</a></li>
+              <li><a href="#gio-dia-phuong-chuan">Sự khác nhau giữa giờ mặt trời địa phương và giờ chuẩn</a></li>
+              <li><a href="#phinh-xich-dao">Trái Đất bị phình ra ở xích đạo (hình cầu dẹt)</a></li>
+            </ul>
+          </li>
+          <li><a href="#he-qua-quanh-mat-troi">II. Hệ quả của chuyển động quanh Mặt Trời</a>
+            <ul>
+              <li><a href="#cac-mua">Các mùa trong năm (xuân, hạ, thu, đông)</a></li>
+              <li><a href="#do-dai-ngay-dem">Độ dài ngày-đêm thay đổi theo mùa</a></li>
+              <li><a href="#ngay-dem-cuc">Ngày cực và đêm cực ở vùng cực</a></li>
+              <li><a href="#buc-xa-theo-mua">Lượng bức xạ Mặt Trời thay đổi theo mùa và vĩ độ</a></li>
+              <li><a href="#nam-nhuan">Độ dài năm và năm nhuận</a></li>
+              <li><a href="#bon-moc">Bốn mốc Xuân phân – Thu phân – Hạ chí – Đông chí</a></li>
+              <li><a href="#khi-hau-theo-mua">Thay đổi khí hậu theo mùa (gió mùa, mưa-khô)</a></li>
+            </ul>
+          </li>
+          <li><a href="#ket-luan">Kết luận</a></li>
+        </ul>
+      </nav>
+
+      <!-- Lời mở -->
+      <section id="loi-mo" class="fade-section visible">
+        <h2>Lời mở</h2>
+        <p>Trái Đất vừa tự quay quanh trục, vừa quay quanh Mặt Trời, nên tạo ra các chu kỳ ngày-đêm và mùa. Hai chu kỳ này định hình khí hậu, thời tiết, và nhịp sinh học của sinh vật. Trong phần 1, ta xem xét những hệ quả từ việc Trái Đất tự quay quanh trục: hiện tượng ngày-đêm, múi giờ, lực Coriolis, gió, và dòng biển. Trong phần 2, ta xem xét kết quả từ việc Trái Đất quay quanh Mặt Trời: các mùa, độ dài ngày-đêm theo mùa, mốc phân chí/ngày bằng, lượng bức xạ thay đổi, năm nhuận, v.v. Các hiện tượng này tương tác phức tạp tạo nên khí hậu toàn cầu đa dạng và là nền tảng cho sự sống phát triển. Nội dung trình bày khái quát, dễ hiểu nhưng đầy đủ từng khía cạnh liên quan.</p>
+      </section>
+
+      <!-- Bảng thuật ngữ -->
+      <section id="bang-thuat-ngu" class="fade-section visible">
+        <h2>Bảng thuật ngữ</h2>
+        <ul>
+          <li><strong>Chu kỳ ngày-đêm (Day-night cycle)</strong>: Sự luân phiên giữa ngày và đêm mỗi 24 giờ do Trái Đất tự quay.</li>
+          <li><strong>Múi giờ chuẩn (Time zone)</strong>: 24 múi giờ, mỗi múi rộng 15° kinh độ; UTC làm mốc. Có ngoại lệ lệch 30’/45’.</li>
+          <li><strong>Lực Coriolis</strong>: Lực quán tính giả trong hệ quay, lệch phải ở Bắc bán cầu, trái ở Nam bán cầu; bằng 0 tại Xích đạo.</li>
+          <li><strong>Tuần hoàn khí quyển</strong>: Ba pha Hadley – Ferrel – Polar quyết định gió Tín phong, Tây ôn đới, Đông cực.</li>
+          <li><strong>Dòng biển vòng xoáy (Gyre)</strong>: Hệ dòng hải lưu lớn do gió và Coriolis; tích tụ rác ở trung tâm gyre.</li>
+          <li><strong>Equinox (Xuân phân, Thu phân)</strong>: Mặt Trời chiếu xích đạo, ngày = đêm toàn cầu.</li>
+          <li><strong>Solstice (Hạ chí, Đông chí)</strong>: Mặt Trời chiếu tại 23,5°B/23,5°N; ngày dài nhất/đêm dài nhất.</li>
+          <li><strong>Photoperiodism</strong>: Nhịp sinh học theo ánh sáng – sinh vật đáp ứng độ dài ngày-đêm.</li>
+        </ul>
+      </section>
+
+      <!-- I. Hệ quả của chuyển động tự quay -->
+      <section id="he-qua-tu-quay" class="fade-section visible">
+        <h2>I. Hệ quả của chuyển động tự quay quanh trục</h2>
+
+        <div class="quote-box">
+          <i class="fas fa-quote-left"></i>
+          <span>Trái Đất quay một vòng quanh trục của nó trong khoảng 24 giờ, tạo nên chu kỳ ngày-đêm cơ bản cho sự sống.</span>
+        </div>
+
+        <h3 id="su-luan-phien-ngay-dem">1) Sự luân phiên ngày đêm</h3>
+<figure class="my-3 text-center">
+  <img src="geometry2/Ngaydem.jpg" alt="Sự luân phiên ngày đêm" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 360px; object-fit: cover;">
+  <figcaption class="small text-muted mt-2">Hình: Minh hoạ ngày - đêm</figcaption>
+</figure>
+        
+        <div class="info-card">
+          <h4><i class="fas fa-sun me-2"></i>Nguyên nhân</h4>
+          <p>Trái Đất tự quay từ Tây sang Đông (~24h), nên nửa cầu hướng Mặt Trời là ngày, nửa còn lại là đêm.</p>
+        </div>
+
+        <div class="alert alert-info mt-3" style="background: rgba(64, 156, 255, 0.1); border: 1px solid rgba(64, 156, 255, 0.3); border-radius: 10px; padding: 15px;">
+          <i class="fas fa-vr-cardboard me-2"></i>
+          <strong>Xem Mô Phỏng 3D:</strong> 
+          <a href="thamquan3d.html" class="text-white" style="text-decoration: underline;">Khám phá mô hình Ngày & Đêm 3D tương tác →</a>
+        </div>
+
+        <div class="info-card">
+          <h4><i class="fas fa-heart-pulse me-2"></i>Hệ quả sinh học</h4>
+          <ul>
+            <li><strong>Nhịp sinh học (Circadian rhythm):</strong> Tất cả sinh vật có đồng hồ sinh học 24 giờ điều chỉnh giấc ngủ, ăn uống, chuyển hóa.</li>
+            <li><strong>Quang hợp:</strong> Thực vật chỉ quang hợp ban ngày, tích trữ năng lượng từ ánh sáng Mặt Trời.</li>
+            <li><strong>Nhiệt độ thay đổi:</strong> Ngày nóng hơn đêm → ảnh hưởng hoạt động động vật, thoát hơi nước thực vật.</li>
+            <li><strong>Săn mồi:</strong> Nhiều động vật hoạt động ban đêm (dơi, cú mèo) hoặc hoàng hôn/bình minh.</li>
+          </ul>
+        </div>
+        
+        <div class="key-points">
+          <h4><i class="fas fa-lightbulb me-2"></i>Điểm quan trọng</h4>
+          <ul>
+            <li>Chu kỳ ngày-đêm 24h là cơ sở cho mọi hoạt động sống trên Trái Đất</li>
+            <li>Không có ngày-đêm → không có nhịp sinh học → hệ sinh thái sụp đổ</li>
+            <li>Thời gian một ngày đang tăng chậm (~1.7ms/100 năm) do ma sát thủy triều</li>
+          </ul>
+        </div>
+
+        <h3 id="he-thong-mui-gio" class="mt-3">2) Hệ thống múi giờ trên Trái Đất</h3>
+<figure class="my-3 text-center">
+  <img src="geometry/Muigio1.jpg" alt="Hệ thống múi giờ" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 360px; object-fit: cover;">
+  <figcaption class="small text-muted mt-2">Hình: Múi giờ và đường đổi ngày</figcaption>
+</figure>
+        
+        <div class="info-card">
+          <h4>Nguyên tắc cơ bản</h4>
+          <ul>
+            <li><strong>Quy ước:</strong> 360° chia cho 24h = 15° mỗi giờ</li>
+            <li><strong>UTC (Coordinated Universal Time):</strong> Múi giờ chuẩn tại kinh tuyến 0° (Greenwich, Anh)</li>
+            <li><strong>24 múi giờ:</strong> UTC-12 đến UTC+12 (có ngoại lệ UTC+13, UTC+14)</li>
+            <li><strong>Múi giờ lệch:</strong> Một số quốc gia dùng UTC+5:30 (Ấn Độ), UTC+9:30 (Australia)</li>
+            <li><strong>Đường đổi ngày quốc tế:</strong> Gần kinh tuyến 180°, vượt qua đây thì đổi ngày</li>
+          </ul>
+        </div>
+        
+        <div class="key-points">
+          <h4><i class="fas fa-clock me-2"></i>Ứng dụng thực tế</h4>
+          <ul>
+            <li>Đồng bộ giao thông quốc tế (máy bay, tàu biển)</li>
+            <li>Giao dịch tài chính toàn cầu (thị trường mở/đóng cửa theo múi giờ)</li>
+            <li>Truyền thông và Internet (server, email, video call)</li>
+            <li>Việt Nam: UTC+7 (Giờ Đông Dương)</li>
+          </ul>
+        </div>
+
+        <h3 id="luc-coriolis" class="mt-3">3) Lực Coriolis</h3>
+<figure class="my-3 text-center">
+  <img src="geometry/Coriolis1.jpg" alt="Lực Coriolis" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 360px; object-fit: cover;">
+  <figcaption class="small text-muted mt-2">Hình: Hiệu ứng Coriolis</figcaption>
+</figure>
+        
+        <div class="info-card">
+          <h4>Định nghĩa và cơ chế</h4>
+          <p><strong>Lực Coriolis</strong> là lực quán tính giả xuất hiện trong hệ quy chiếu quay (Trái Đất). Vật thể chuyển động sẽ bị lệch hướng:</p>
+          <ul>
+            <li><strong>Bắc bán cầu:</strong> Lệch sang PHẢI so với hướng di chuyển</li>
+            <li><strong>Nam bán cầu:</strong> Lệch sang TRÁI so với hướng di chuyển</li>
+            <li><strong>Tại xích đạo:</strong> Lực Coriolis = 0 (không có hiệu ứng)</li>
+            <li><strong>Cường độ:</strong> Tăng dần từ xích đạo lên cực (cực đại ở hai cực)</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Hệ quả thực tế</h4>
+          <ul>
+            <li><strong>Bão nhiệt đới:</strong> Quay NGƯỢC chiều kim đồng hồ (Bắc), THUẬN chiều (Nam)</li>
+            <li><strong>Dòng biển:</strong> Lệch hướng tạo vòng xoáy đại dương</li>
+            <li><strong>Gió:</strong> Không thổi thẳng từ cao áp → thấp áp, mà bị lệch</li>
+            <li><strong>Tên lửa đạn đạo:</strong> Phải tính toán Coriolis để bắn chính xác</li>
+            <li><strong>Sông:</strong> Bờ bên phải bị xói mòn nhiều hơn (Bắc bán cầu)</li>
+          </ul>
+        </div>
+
+        <h3 id="dai-gio-chinh" class="mt-3">4) Hình thành các đai gió chính</h3>
+        
+        <div class="info-card">
+          <h4>Ba pha tuần hoàn khí quyển</h4>
+          <p>Do sự chênh lệch nhiệt độ giữa xích đạo và cực + lực Coriolis → hình thành 3 pha tuần hoàn:</p>
+          <ul>
+            <li><strong>Pha Hadley (0-30°):</strong> Không khí nóng lên tại xích đạo → hạ xuống 30° → tạo gió Tín phong (Trade winds)</li>
+            <li><strong>Pha Ferrel (30-60°):</strong> Pha trung gian → tạo gió Tây ôn đới (Westerlies)</li>
+            <li><strong>Pha Polar (60-90°):</strong> Không khí lạnh từ cực → tạo gió Đông cực (Polar easterlies)</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Các đai gió chính</h4>
+          <ul>
+            <li><strong>Gió Tín phong (0-30°):</strong> Thổi từ ĐB → TN (Bắc), TB → ĐN (Nam). Ổn định, giúp thời kỳ Đại hàng hải.</li>
+            <li><strong>Gió Tây ôn đới (30-60°):</strong> Thổi từ TB → ĐB (Bắc), TN → ĐN (Nam). Mạnh, ảnh hưởng khí hậu Châu Âu, Bắc Mỹ.</li>
+            <li><strong>Gió Đông cực (60-90°):</strong> Thổi từ ĐB/ĐN ra. Lạnh và khô.</li>
+            <li><strong>Vành đai yên tĩnh (30°):</strong> Khu vực chìm xuống, ít gió, nhiều sa mạc (Sahara, Gobi)</li>
+          </ul>
+        </div>
+        <div class="mt-3">
+          <img src="geometry2/Daigio.jpg" alt="Đai gió và tuần hoàn khí quyển" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="dong-bien-lech-huong" class="mt-3">5) Lệch hướng dòng biển và vòng xoáy đại dương</h3>
+        
+        <div class="info-card">
+          <h4>Cơ chế hình thành</h4>
+          <p>Dòng biển được tạo ra bởi: <strong>Gió</strong> + <strong>Lực Coriolis</strong> + <strong>Hiệu ứng Ekman</strong> (nước bề mặt lệch 45° so với gió)</p>
+          <ul>
+            <li><strong>Vòng xoáy đại dương (Gyre):</strong> Hệ thống dòng biển khổng lồ hình vòng tròn</li>
+            <li><strong>Bắc bán cầu:</strong> Gyre quay THUẬN chiều kim đồng hồ</li>
+            <li><strong>Nam bán cầu:</strong> Gyre quay NGƯỢC chiều kim đồng hồ</li>
+            <li><strong>5 gyre lớn:</strong> Bắc Thái Bình Dương, Nam Thái Bình Dương, Bắc Đại Tây Dương, Nam Đại Tây Dương, Ấn Độ Dương</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Hệ quả</h4>
+          <ul>
+            <li><strong>Dòng ấm:</strong> Gulf Stream (Đại Tây Dương) → ấm Châu Âu, Kuroshio (Thái Bình Dương) → ấm Nhật Bản</li>
+            <li><strong>Dòng lạnh:</strong> Humboldt (Nam Mỹ), California → sa mạc ven biển (Atacama, Namib)</li>
+            <li><strong>Upwelling:</strong> Nước sâu giàu dinh dưỡng lên → khu đánh cá giàu có (Peru, Namibia)</li>
+            <li><strong>Rác thải nhựa:</strong> Tích tụ ở trung tâm gyre → "Great Pacific Garbage Patch"</li>
+            <li><strong>Điều tiết khí hậu:</strong> Phân phối nhiệt toàn cầu, ảnh hưởng mưa-khô</li>
+          </ul>
+        </div>
+        <div class="mt-3">
+          <img src="geometry2/dongbienvaxoaydaiduong1.jpg" alt="Vòng xoáy đại dương" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="gio-dia-phuong-chuan" class="mt-3">6) Sự khác nhau giữa giờ mặt trời địa phương và giờ chuẩn</h3>
+        
+        <div class="info-card">
+          <h4>Hai loại giờ</h4>
+          <ul>
+            <li><strong>Giờ mặt trời địa phương (Solar time):</strong> Dựa vào vị trí Mặt Trời (12h = Mặt Trời lên cao nhất)</li>
+            <li><strong>Giờ chuẩn (Standard time):</strong> Giờ thống nhất cho cả múi giờ 15° kinh độ</li>
+            <li><strong>Chênh lệch:</strong> Có thể lệch đến ±30 phút trong cùng một múi giờ</li>
+            <li><strong>Ví dụ:</strong> Hà Nội (105.8°E) vs TP.HCM (106.7°E) cùng UTC+7 nhưng giờ mặt trời khác nhau ~4 phút</li>
+          </ul>
+        </div>
+        
+        <div class="key-points">
+          <h4><i class="fas fa-history me-2"></i>Lịch sử</h4>
+          <ul>
+            <li><strong>Trước 1884:</strong> Mỗi thành phố dùng giờ mặt trời địa phương → hỗn loạn</li>
+            <li><strong>1884:</strong> Hội nghị Kinh tuyến Quốc tế tại Washington → thiết lập 24 múi giờ chuẩn</li>
+            <li><strong>Lý do:</strong> Đường sắt phát triển → cần đồng bộ thời gian tàu chạy</li>
+            <li><strong>Ngày nay:</strong> Giờ chuẩn thống trị, giờ mặt trời chỉ dùng trong thiên văn học</li>
+          </ul>
+        </div>
+        <div class="mt-3">
+          <img src="geometry2/diaphuongvagiochuan.jpg" alt="Đồng hồ và múi giờ" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="phinh-xich-dao" class="mt-3">7) Trái Đất bị phình ra ở xích đạo (hình cầu dẹt)</h3>
+        
+        <div class="info-card">
+          <h4>Nguyên nhân</h4>
+          <p>Do <strong>lực ly tâm</strong> khi Trái Đất tự quay → vật chất ở xích đạo bị đẩy ra ngoài</p>
+          <ul>
+            <li><strong>Hình dạng:</strong> Trái Đất không phải hình cầu hoàn hảo mà là <em>ellipsoid dẹt</em> (oblate spheroid)</li>
+            <li><strong>Bán kính xích đạo:</strong> 6,378.1 km</li>
+            <li><strong>Bán kính cực:</strong> 6,356.8 km</li>
+            <li><strong>Chênh lệch:</strong> ~21.3 km (xích đạo phình ra hơn cực)</li>
+            <li><strong>Độ dẹt:</strong> 1/298.257 (rất nhỏ, nhìn từ vũ trụ vẫn tròn)</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Hệ quả</h4>
+          <ul>
+            <li><strong>Trọng lực:</strong> Nhẹ hơn ở xích đạo (9.78 m/s²) so với cực (9.83 m/s²)</li>
+            <li><strong>Núi cao nhất:</strong> Chimborazo (Ecuador, 6,263m) xa tâm Trái Đất hơn Everest (8,849m) vì nằm gần xích đạo</li>
+            <li><strong>Quỹ đạo vệ tinh:</strong> Phải tính toán hình dẹt để định vị GPS chính xác</li>
+            <li><strong>Tiến động của trục:</strong> Hình dẹt + lực hấp dẫn Mặt Trời/Mặt Trăng → trục Trái Đất tiến động (precession) chu kỳ 26,000 năm</li>
+          </ul>
+        </div>
+        <div class="mt-3">
+          <img src="geometry2/Ngaydem.jpg" alt="Trái Đất phình ở xích đạo" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+      </section>
+
+      <hr class="section-divider">
+
+      <!-- II. Hệ quả của chuyển động quanh Mặt Trời -->
+      <section id="he-qua-quanh-mat-troi" class="fade-section visible mt-4">
+        <h2>II. Hệ quả của chuyển động quanh Mặt Trời</h2>
+
+        <div class="quote-box">
+          <i class="fas fa-quote-left"></i>
+          <span>Trục Trái Đất nghiêng 23,5° so với mặt phẳng quỹ đạo, tạo nên sự thay đổi của bốn mùa trên toàn cầu.</span>
+        </div>
+
+        <h3 id="cac-mua">1) Các mùa trong năm (xuân, hạ, thu, đông)</h3>
+<figure class="my-3 text-center">
+  <img src="geometry2/4mua.jpg" alt="Các mùa trong năm" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 360px; object-fit: cover;">
+  <figcaption class="small text-muted mt-2">Hình: Các mùa trong năm</figcaption>
+</figure>
+        
+        <div class="info-card">
+          <h4>Nguyên nhân hình thành các mùa</h4>
+          <p><strong>Không phải</strong> do khoảng cách Trái Đất - Mặt Trời thay đổi! Mà do:</p>
+          <ul>
+            <li><strong>Trục nghiêng 23.5°:</strong> Trục Trái Đất nghiêng cố định so với mặt phẳng quỹ đạo</li>
+            <li><strong>Góc chiếu sáng thay đổi:</strong> Khi Trái Đất quay quanh Mặt Trời, bán cầu này nghiêng về Mặt Trời (hè), bán cầu kia nghiêng xa (đông)</li>
+            <li><strong>Thực tế:</strong> Trái Đất GẦN Mặt Trời nhất vào tháng 1 (đông Bắc bán cầu), XA nhất vào tháng 7 (hè Bắc bán cầu)</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Bốn mùa chi tiết</h4>
+          <ul>
+            <li><strong>🌸 XUÂN (21/03 - Xuân phân):</strong> Mặt Trời chiếu vuông góc xích đạo. Ngày = Đêm toàn cầu (12h/12h). Nhiệt độ ôn hòa, cây trổ hoa.</li>
+            <li><strong>☀️ HẠ (21/06 - Hạ chí):</strong> Mặt Trời chiếu vuông góc Chí tuyến Bắc (23.5°N). Bắc: Ngày dài nhất, nóng nhất. Nam: Đông lạnh.</li>
+            <li><strong>🍂 THU (23/09 - Thu phân):</strong> Mặt Trời lại chiếu vuông góc xích đạo. Ngày = Đêm. Nhiệt độ giảm dần (Bắc), ấm lên (Nam).</li>
+            <li><strong>❄️ ĐÔNG (22/12 - Đông chí):</strong> Mặt Trời chiếu vuông góc Chí tuyến Nam (23.5°S). Bắc: Ngày ngắn nhất, lạnh nhất. Nam: Hè nóng.</li>
+          </ul>
+        </div>
+        
+        <div class="key-points mt-3">
+          <h4><i class="fas fa-globe me-2"></i>Lưu ý quan trọng</h4>
+          <ul>
+            <li>Các mùa ở Bắc và Nam bán cầu TRÁI NGƯỢC nhau</li>
+            <li>Khi Bắc bán cầu là mùa hè → Nam bán cầu là mùa đông</li>
+            <li>Vùng xích đạo: Không có 4 mùa rõ rệt, chỉ có mùa mưa và mùa khô</li>
+            <li>Trục nghiêng 23.5° là lý do DUY NHẤT tạo ra các mùa</li>
+          </ul>
+        </div>
+        <div class="alert alert-info mt-3" style="background: rgba(64, 156, 255, 0.1); border: 1px solid rgba(64, 156, 255, 0.3); border-radius: 10px; padding: 15px;">
+          <i class="fas fa-vr-cardboard me-2"></i>
+          <strong>Xem Mô Phỏng 3D:</strong> 
+          <a href="thamquan3d.html" class="text-white" style="text-decoration: underline;">Khám phá mô hình Bốn Mùa 3D tương tác →</a>
+        </div>
+
+        <div class="mt-3">
+          <img src="geometry2/4mua.jpg" alt="Bốn mùa trong năm" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="do-dai-ngay-dem" class="mt-3">2) Độ dài ngày-đêm thay đổi theo mùa</h3>
+        
+        <div class="info-card">
+          <h4>Nguyên nhân và cơ chế</h4>
+          <p>Do trục Trái Đất nghiêng 23.5°, khi Trái Đất quay quanh Mặt Trời, độ dài ban ngày và ban đêm thay đổi đáng kể:</p>
+          <ul>
+            <li><strong>Tại xích đạo (0°):</strong> Luôn ~12h ngày / 12h đêm quanh năm (biên độ chỉ ±5 phút)</li>
+            <li><strong>Vĩ độ 20-30°:</strong> Biên độ vừa phải (~2-3 giờ giữa hè và đông)</li>
+            <li><strong>Vĩ độ 40-60°:</strong> Biên độ lớn (~5-8 giờ giữa hè và đông)</li>
+            <li><strong>Trên 66.5° (Vòng cực):</strong> Xuất hiện ngày cực / đêm cực</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Ví dụ cụ thể các vĩ độ</h4>
+          <table class="table table-bordered text-white">
+            <thead>
+              <tr><th>Địa điểm (Vĩ độ)</th><th>Hạ chí (21/6)</th><th>Xuân/Thu phân</th><th>Đông chí (22/12)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Singapore (1°N)</td><td>12h05 ngày</td><td>12h00 ngày</td><td>11h55 ngày</td></tr>
+              <tr><td>Hà Nội (21°N)</td><td>13h30 ngày</td><td>12h00 ngày</td><td>10h30 ngày</td></tr>
+              <tr><td>London (51°N)</td><td>16h38 ngày</td><td>12h00 ngày</td><td>7h50 ngày</td></tr>
+              <tr><td>Reykjavik (64°N)</td><td>21h00 ngày</td><td>12h00 ngày</td><td>4h20 ngày</td></tr>
+              <tr><td>Bắc Cực (90°N)</td><td>24h ngày (6 tháng)</td><td>12h00 ngày</td><td>0h ngày (đêm cực)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Hệ quả đối với con người và sinh vật</h4>
+          <ul>
+            <li><strong>Nhịp sinh học:</strong> Thiếu ánh sáng mùa đông (vĩ độ cao) → trầm cảm mùa đông (SAD - Seasonal Affective Disorder)</li>
+            <li><strong>Năng lượng mặt trời:</strong> Ngày dài → nhiều điện mặt trời hơn (Bắc Âu mùa hè)</li>
+            <li><strong>Nông nghiệp:</strong> Thời gian chiếu sáng ảnh hưởng trồng trọt (lúa, rau cần ngày dài)</li>
+            <li><strong>Hoạt động xã hội:</strong> Ngày dài → người ta vui vẻ, năng động hơn; ngày ngắn → ít hoạt động ngoài trời</li>
+            <li><strong>Động vật di cư:</strong> Độ dài ngày là tín hiệu để chim di cư về phía nam (mùa đông) hoặc bắc (mùa hè)</li>
+          </ul>
+        </div>
+        
+        <div class="mt-3">
+          <img src="geometry2/bxmt1.jpg" alt="Bức xạ Mặt Trời theo mùa" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="ngay-dem-cuc" class="mt-3">3) Ngày cực và đêm cực ở vùng cực</h3>
+        
+        <div class="info-card">
+          <h4>Định nghĩa và nguyên nhân</h4>
+          <p><strong>Ngày cực (Polar day / Midnight Sun):</strong> Mặt Trời không lặn trong 24 giờ liên tục</p>
+          <p><strong>Đêm cực (Polar night):</strong> Mặt Trời không mọc trong 24 giờ liên tục</p>
+          <ul>
+            <li><strong>Vĩ độ yêu cầu:</strong> Từ 66.5° (Vòng cực) trở lên mới có hiện tượng này</li>
+            <li><strong>Nguyên nhân:</strong> Trục Trái Đất nghiêng 23.5° + quay quanh Mặt Trời → cực Bắc/Nam luân phiên nghiêng về/xa Mặt Trời</li>
+            <li><strong>Độ dài:</strong> Càng gần cực, ngày cực/đêm cực càng dài (cực đạt 6 tháng)</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Thời gian ngày cực và đêm cực</h4>
+          <table class="table table-bordered text-white">
+            <thead>
+              <tr><th>Vĩ độ</th><th>Ngày cực (mùa hè)</th><th>Đêm cực (mùa đông)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>66.5° (Vòng cực)</td><td>1 ngày (21/6)</td><td>1 ngày (22/12)</td></tr>
+              <tr><td>70°N (Tromsø, Na Uy)</td><td>~2 tháng (Tháng 5-7)</td><td>~2 tháng (Tháng 11-1)</td></tr>
+              <tr><td>80°N (Svalbard)</td><td>~4 tháng (Tháng 4-8)</td><td>~4 tháng (Tháng 10-2)</td></tr>
+              <tr><td>90°N (Bắc Cực)</td><td>6 tháng (21/3 - 23/9)</td><td>6 tháng (23/9 - 21/3)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Hệ quả sinh học và xã hội</h4>
+          <ul>
+            <li><strong>Sức khỏe con người:</strong> Thiếu vitamin D (đêm cực), rối loạn giấc ngủ, trầm cảm, căng thẳng tâm lý</li>
+            <li><strong>Thích nghi sinh học:</strong> Người bản địa Inuit có gen đặc biệt giúp chống trầm cảm tốt hơn</li>
+            <li><strong>Động vật:</strong> Gấu Bắc Cực ngủ đông (đêm cực), tuần lộc di cư về nam (tránh đêm cực)</li>
+            <li><strong>Thực vật:</strong> Tăng trưởng cực nhanh mùa hè (24h ánh sáng) nhưng rất chậm mùa đông</li>
+            <li><strong>Du lịch:</strong> "Mặt Trời nửa đêm" ở Bắc Âu là điểm du lịch nổi tiếng (Na Uy, Iceland, Alaska)</li>
+            <li><strong>Khoa học:</strong> Trạm nghiên cứu Nam Cực tận dụng ngày cực để quan sát vũ trụ liên tục</li>
+          </ul>
+        </div>
+        
+        <div class="mt-3">
+          <img src="geometry2/ngaycuc.jpg" alt="Ngày cực" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="buc-xa-theo-mua" class="mt-3">4) Lượng bức xạ Mặt Trời thay đổi theo mùa và vĩ độ</h3>
+        
+        <div class="info-card">
+          <h4>Hai yếu tố quyết định năng lượng</h4>
+          <p>Lượng năng lượng Mặt Trời một địa điểm nhận được phụ thuộc vào:</p>
+          <ul>
+            <li><strong>1. Góc chiếu sáng:</strong> Mặt Trời chiếu vuông góc → năng lượng tập trung. Chiếu xiên → năng lượng phân tán trên diện tích lớn</li>
+            <li><strong>2. Thời gian chiếu sáng:</strong> Ngày dài → nhiều giờ nhận năng lượng</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Bức xạ theo mùa</h4>
+          <ul>
+            <li><strong>Mùa hè (Bắc bán cầu):</strong> Góc chiếu gần vuông góc + ngày dài → Năng lượng CỰC CAO</li>
+            <li><strong>Mùa đông:</strong> Góc chiếu xiên + ngày ngắn → Năng lượng CỰC THẤP</li>
+            <li><strong>Xuân/Thu phân:</strong> Góc chiếu trung bình + ngày 12h → Năng lượng trung bình</li>
+            <li><strong>Chênh lệch:</strong> Vĩ độ cao (60°N) nhận gấp ~10 lần năng lượng mùa hè so với mùa đông!</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Bức xạ theo vĩ độ</h4>
+          <table class="table table-bordered text-white">
+            <thead>
+              <tr><th>Vĩ độ</th><th>Năng lượng trung bình/năm</th><th>Khí hậu</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Xích đạo (0°)</td><td>~250 W/m² (cao nhất)</td><td>Nóng quanh năm, nhiệt đới</td></tr>
+              <tr><td>30°N/S</td><td>~200 W/m²</td><td>Cận nhiệt, sa mạc nóng</td></tr>
+              <tr><td>45°N/S</td><td>~150 W/m²</td><td>Ôn đới, 4 mùa rõ rệt</td></tr>
+              <tr><td>60°N/S</td><td>~100 W/m²</td><td>Cận cực, lạnh</td></tr>
+              <tr><td>90°N/S (Cực)</td><td>~80 W/m² (thấp nhất)</td><td>Băng tuyết quanh năm</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Hệ quả</h4>
+          <ul>
+            <li><strong>Khí hậu:</strong> Xích đạo nóng → không khí nóng lên → gió mậu dịch, mưa nhiệt đới</li>
+            <li><strong>Sinh vật:</strong> Rừng nhiệt đới (xích đạo) có sinh khối lớn nhất. Cực có rất ít sinh vật</li>
+            <li><strong>Năng lượng tái tạo:</strong> Pin mặt trời hiệu quả ở sa mạc (30°N/S), kém hiệu quả ở cực</li>
+            <li><strong>Nông nghiệp:</strong> Xích đạo: Trồng trọt quanh năm. Vĩ độ cao: Chỉ trồng được mùa hè</li>
+            <li><strong>Băng tan:</strong> Cực nhận ít năng lượng nhưng đang nóng lên nhanh do biến đổi khí hậu → băng tan, mực nước biển dâng</li>
+          </ul>
+        </div>
+        
+        <div class="mt-3">
+          <img src="geometry2/bxmt2.jpg" alt="Bức xạ Mặt Trời" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="nam-nhuan" class="mt-3">5) Độ dài năm và năm nhuận</h3>
+        
+        <div class="info-card">
+          <h4>Độ dài năm thực tế</h4>
+          <p>Trái Đất quay một vòng quanh Mặt Trời mất:</p>
+          <ul>
+            <li><strong>Năm nhiệt đới (Tropical year):</strong> <strong>365.2422 ngày</strong> (365 ngày 5h 48m 46s)</li>
+            <li><strong>Lịch đơn giản:</strong> 365 ngày</li>
+            <li><strong>Sai số:</strong> Mỗi năm thiếu ~0.2422 ngày (gần 6 giờ)</li>
+            <li><strong>Hậu quả nếu không sửa:</strong> Sau 4 năm thiếu ~1 ngày → mùa sẽ lệch → sau 100 năm lệch ~24 ngày!</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Quy tắc năm nhuận (Lịch Gregory - từ 1582)</h4>
+          <p>Để hiệu chỉnh sai số, người ta thêm 1 ngày (29/2) theo quy tắc:</p>
+          <ol>
+            <li><strong>Chia hết cho 4 → NĂM NHUẬN</strong> (2024, 2028, 2032...)
+              <br>→ Thêm 1 ngày mỗi 4 năm = +0.25 ngày/năm</li>
+            <li><strong>NHƯNG chia hết cho 100 → KHÔNG phải năm nhuận</strong> (1900, 2100, 2200...)
+              <br>→ Trừ bớt vì cộng hơi nhiều</li>
+            <li><strong>NHƯNG chia hết cho 400 → VẪN là năm nhuận</strong> (2000, 2400...)
+              <br>→ Cộng lại một chút</li>
+          </ol>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>Ví dụ cụ thể</h4>
+          <ul>
+            <li><strong>2024:</strong> Chia hết cho 4 → <span style="color: #00ff00;">NĂM NHUẬN ✓</span> (có 29/2)</li>
+            <li><strong>2100:</strong> Chia hết cho 4 VÀ 100, NHƯNG không chia hết cho 400 → <span style="color: #ff0000;">KHÔNG phải năm nhuận ✗</span></li>
+            <li><strong>2000:</strong> Chia hết cho 4, 100, VÀ 400 → <span style="color: #00ff00;">NĂM NHUẬN ✓</span></li>
+            <li><strong>1900:</strong> Chia hết cho 4 và 100, nhưng không chia hết cho 400 → <span style="color: #ff0000;">KHÔNG phải năm nhuận ✗</span></li>
+          </ul>
+        </div>
+        
+        <div class="key-points mt-3">
+          <h4><i class="fas fa-calculator me-2"></i>Độ chính xác</h4>
+          <ul>
+            <li>Với quy tắc này, lịch Gregory có sai số chỉ <strong>~1 ngày / 3,030 năm</strong></li>
+            <li>Cực kỳ chính xác! Không cần hiệu chỉnh trong hàng nghìn năm</li>
+            <li>Lịch cũ (Julius) chỉ có quy tắc 1 (chia hết 4) → sai số 1 ngày / 128 năm → đã bị bỏ</li>
+          </ul>
+        </div>
+        
+        <div class="mt-3">
+          <img src="geometry2/namnhuan.jpg" alt="Lịch dương và năm nhuận" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="bon-moc" class="mt-3">6) Bốn mốc Xuân phân – Thu phân – Hạ chí – Đông chí</h3>
+        
+        <div class="info-card">
+          <h4>Bốn mốc thiên văn quan trọng</h4>
+          <p>Đánh dấu 4 vị trí đặc biệt của Trái Đất trên quỹ đạo quanh Mặt Trời, là nền tảng của lịch và văn hóa toàn cầu:</p>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>1️⃣ XUÂN PHÂN (Vernal Equinox) - 20-21/03</h4>
+          <ul>
+            <li><strong>Vị trí Mặt Trời:</strong> Chiếu vuông góc xích đạo (0°), di chuyển từ Nam → Bắc</li>
+            <li><strong>Độ dài ngày:</strong> Ngày = Đêm = 12h trên toàn cầu</li>
+            <li><strong>Ý nghĩa:</strong> Bắt đầu mùa xuân (Bắc), mùa thu (Nam). Thiên nhiên thức giấc, cây cối nở hoa</li>
+            <li><strong>Văn hóa:</strong> Tết Nowruz (Ba Tư), Higan (Nhật Bản), nhiều nền văn hóa cổ đại tổ chức lễ hội xuân</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>2️⃣ HẠ CHÍ (Summer Solstice) - 20-21/06</h4>
+          <ul>
+            <li><strong>Vị trí Mặt Trời:</strong> Chiếu vuông góc Chí tuyến Bắc (23.5°N) - Điểm CỰC BẮC nhất</li>
+            <li><strong>Độ dài ngày:</strong> Bắc: Ngày dài nhất (16-24h), Nam: Ngày ngắn nhất</li>
+            <li><strong>Ý nghĩa:</strong> Đỉnh điểm mùa hè (Bắc), đỉnh điểm mùa đông (Nam)</li>
+            <li><strong>Văn hóa:</strong> Lễ hội Midsummer (Bắc Âu), Stonehenge (Anh) hướng về Mặt Trời lúc Hạ chí</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>3️⃣ THU PHÂN (Autumnal Equinox) - 22-23/09</h4>
+          <ul>
+            <li><strong>Vị trí Mặt Trời:</strong> Lại chiếu vuông góc xích đạo (0°), di chuyển từ Bắc → Nam</li>
+            <li><strong>Độ dài ngày:</strong> Ngày = Đêm = 12h toàn cầu</li>
+            <li><strong>Ý nghĩa:</strong> Bắt đầu mùa thu (Bắc), mùa xuân (Nam). Thu hoạch, lá cây vàng rơi (Bắc)</li>
+            <li><strong>Văn hóa:</strong> Tết Trung thu (Việt Nam, Trung Quốc), Lễ tạ ơn Thu hoạch</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>4️⃣ ĐÔNG CHÍ (Winter Solstice) - 21-22/12</h4>
+          <ul>
+            <li><strong>Vị trí Mặt Trời:</strong> Chiếu vuông góc Chí tuyến Nam (23.5°S) - Điểm CỰC NAM nhất</li>
+            <li><strong>Độ dài ngày:</strong> Bắc: Ngày ngắn nhất (8-0h), Nam: Ngày dài nhất</li>
+            <li><strong>Ý nghĩa:</strong> Đỉnh điểm mùa đông (Bắc), đỉnh điểm mùa hè (Nam)</li>
+            <li><strong>Văn hóa:</strong> Giáng sinh, Đông chí (Trung Quốc), Yule (Bắc Âu cổ đại)</li>
+          </ul>
+        </div>
+        
+        <div class="key-points mt-3">
+          <h4><i class="fas fa-star me-2"></i>Tầm quan trọng</h4>
+          <ul>
+            <li><strong>Equinox</strong> (Phân) = Ngày đêm bằng nhau. <strong>Solstice</strong> (Chí) = Mặt Trời "đứng yên" ở điểm cực</li>
+            <li>4 mốc này là nền tảng cho lịch của hầu hết các nền văn hóa cổ đại</li>
+            <li>Nhiều công trình khảo cổ (kim tự tháp, đền thờ) được xây theo hướng 4 mốc này</li>
+          </ul>
+        </div>
+        <div class="mt-3">
+          <img src="geometry2/Bonmua.jpg" alt="Bốn mốc trong năm" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+        <h3 id="khi-hau-theo-mua" class="mt-3">7) Thay đổi khí hậu theo mùa (gió mùa, mưa-khô)</h3>
+        
+        <div class="info-card">
+          <h4>Nguyên nhân</h4>
+          <p>Trục nghiêng 23.5° → lượng bức xạ thay đổi theo mùa → nhiệt độ, áp suất, gió, mưa thay đổi:</p>
+          <ul>
+            <li><strong>Mùa hè:</strong> Nóng → áp suất thấp → hút gió ẩm từ biển → mưa nhiều</li>
+            <li><strong>Mùa đông:</strong> Lạnh → áp suất cao → đẩy gió khô ra biển → khô hanh</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>GIÓ MÙA (Monsoon) - Đặc trưng Châu Á</h4>
+          <ul>
+            <li><strong>Gió mùa hè (Tháng 5-9):</strong> Từ biển → lục địa (Tây Nam). Ẩm, mưa RẤT NHIỀU (70-90% lượng mưa năm). Cực kỳ quan trọng cho trồng lúa</li>
+            <li><strong>Gió mùa đông (Tháng 11-3):</strong> Từ lục địa → biển (Đông Bắc). Khô, lạnh, ít mưa. Gây khô hanh</li>
+            <li><strong>Khu vực:</strong> Ấn Độ, Bangladesh, Việt Nam, Thái Lan, Myanmar - 60% dân số châu Á phụ thuộc gió mùa</li>
+            <li><strong>Rủi ro:</strong> Gió mùa quá mạnh → lũ lụt thảm khốc (Bangladesh 1970: 500,000 người chết)</li>
+          </ul>
+        </div>
+        
+        <div class="info-card mt-3">
+          <h4>KHÍ HẬU MÙA MƯA - MÙA KHÔ (Nhiệt đới)</h4>
+          <ul>
+            <li><strong>Mùa mưa:</strong> Khi Mặt Trời gần → mưa CỰC NHIỀU (>3000mm), ẩm, nóng. Rừng nhiệt đới phát triển. Lũ lụt, sạt lở</li>
+            <li><strong>Mùa khô:</strong> Khi Mặt Trời xa → ít/không mưa, nắng nóng. Cháy rừng (Amazon, Australia), hạn hán</li>
+            <li><strong>Khu vực:</strong> Amazon, Congo, Indonesia, Philippines</li>
+          </ul>
+        </div>
+        
+        <div class="key-points mt-3">
+          <h4><i class="fas fa-exclamation-triangle me-2"></i>Biến đổi khí hậu</h4>
+          <ul>
+            <li>Biến đổi khí hậu làm gió mùa BẤT THƯỜNG → mưa không đều → ảnh hưởng nghiêm trọng nông nghiệp châu Á</li>
+            <li>El Niño/La Niña làm thay đổi pattern gió mùa → hạn hán hoặc lũ lụt bất thường</li>
+          </ul>
+        </div>
+        <div class="mt-3">
+          <img src="geometry2/khihau1.jpg" alt="Thay đổi khí hậu theo mùa" class="img-fluid rounded shadow mb-2">
+          <div><a href="#toc" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up me-1"></i>Về mục lục</a></div>
+        </div>
+
+      </section>
+
+      <section id="ket-luan" class="mt-4 fade-section visible">
+        <h2>Kết luận</h2>
+        <p>Hai chuyển động của Trái Đất – tự quay quanh trục và quay quanh Mặt Trời – tạo nên ngày–đêm và bốn mùa, hình thành nền khí hậu đa dạng – cơ sở cho sự sống phong phú. Sự tương tác giữa chúng tạo nên nhiều hiện tượng phức tạp như gió mùa, bão nhiệt đới, vòng xoáy đại dương…</p>
+      </section>
+
+      <section class="mt-4">
+        <h3>Nguồn tham khảo</h3>
+        <ul>
+          <li>What Causes the Seasons? (weather.gov)</li>
+          <li>NASA Space Place – Seasons (spaceplace.nasa.gov)</li>
+          <li>JPL Understanding Climate – The Earth (sealevel.jpl.nasa.gov)</li>
+          <li>NOAA/NASA Sunrise/Sunset tables; timeanddate.com</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <p class="mb-0">© 2025 Geography Education Project</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="chatbot-widget.js"></script>
+  
+  <!-- Auto-fix script errors on page load -->
+  <script>
+    window.addEventListener('error', function(e) {
+        console.error('Script error detected:', e.message);
+        if (!sessionStorage.getItem('errorReloaded')) {
+            sessionStorage.setItem('errorReloaded', 'true');
+            setTimeout(function() {
+                window.location.reload(true);
+            }, 100);
+        }
+    });
+    
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            sessionStorage.removeItem('errorReloaded');
+        }, 2000);
+    });
+    
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+  </script>
+  
+  <!-- Reading Progress Script -->
+  <script>
+    // Reading progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('readingProgress').style.width = scrolled + '%';
+    });
+
+    // Smooth scroll for TOC links
+    document.querySelectorAll('#toc a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

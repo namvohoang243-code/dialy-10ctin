@@ -1,0 +1,337 @@
+/* Refs section styling - Đồng bộ với trang chủ */
+.refs-section {
+    background: linear-gradient(135deg, #1a2332 0%, #2d3a52 50%, #1e2938 100%);
+    padding: 80px 8%;
+    min-height: 100vh;
+    position: relative;
+}
+
+.refs-section::before {
+    display: none;
+}
+
+/* Hero section */
+.hero-section {
+    padding: 150px 0 80px;
+    text-align: center;
+    position: relative;
+    background: transparent;
+}
+
+.hero-overlay {
+    display: none;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.aurora-text {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #87ceeb, #4169e1, #1e90ff, #00bfff, #1e90ff, #4169e1);
+    background-size: 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: auroraShift 10s ease infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes auroraShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.hero-subtitle {
+    color: #87ceeb;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Refs box */
+.refs-box {
+    margin: 28px auto 0;
+    background: rgba(26, 35, 50, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(65, 105, 225, 0.2);
+    text-align: left;
+    border: 1px solid rgba(65, 105, 225, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.refs-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4169e1, #1e90ff, #00bfff, #1e90ff, #4169e1);
+    background-size: 200%;
+    animation: shimmer 3s infinite linear;
+    border-radius: 16px 16px 0 0;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.refs-box h2 {
+    margin: 0 0 20px 0;
+    font-size: 1.8rem;
+    color: #87ceeb;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.refs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 15px;
+}
+
+.refs-list li {
+    padding: 15px 18px;
+    background: rgba(45, 58, 82, 0.5);
+    border-left: 4px solid #4169e1;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.refs-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #4169e1, #1e90ff, #00bfff);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.refs-list li:hover {
+    transform: translateX(8px);
+    background: rgba(55, 70, 95, 0.7);
+    box-shadow: 0 5px 20px rgba(65, 105, 225, 0.3);
+}
+
+.refs-list li:hover::before {
+    transform: scaleY(1);
+}
+
+.refs-list strong {
+    display: block;
+    color: #fff;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.refs-list li,
+.refs-list p,
+.refs-list span {
+    color: #e8e8e8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+.refs-list a {
+    color: #87ceeb;
+    text-decoration: none;
+    word-break: break-all;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.refs-list a:hover {
+    color: #4169e1;
+    text-decoration: underline;
+}
+
+.refs-note {
+    margin-top: 20px;
+    padding: 15px;
+    color: #b8d4e8;
+    font-size: 0.95rem;
+    background: rgba(65, 105, 225, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid #4169e1;
+    font-style: italic;
+}
+
+/* =============================
+   MOBILE OPTIMIZATION - NGUON
+   ============================= */
+
+@media (max-width: 992px) {
+    .refs-section {
+        padding: 60px 5%;
+    }
+
+    .refs-box {
+        padding: 25px;
+        margin: 25px auto 0;
+    }
+
+    .refs-box h2 {
+        font-size: 1.6rem;
+    }
+
+    .refs-list {
+        gap: 12px;
+    }
+
+    .refs-list li {
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .refs-section {
+        padding: 50px 4%;
+        background-attachment: scroll;
+    }
+
+    .hero-section {
+        padding: 120px 15px 60px;
+        min-height: 500px;
+    }
+
+    .aurora-text {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+        letter-spacing: 1.5px;
+    }
+
+    .refs-box {
+        padding: 20px;
+        margin: 20px auto 0;
+        border-radius: 12px;
+    }
+
+    .refs-box h2 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+
+    .refs-list {
+        gap: 10px;
+    }
+
+    .refs-list li {
+        padding: 12px 14px;
+        border-left-width: 3px;
+    }
+
+    .refs-list strong {
+        font-size: 0.95rem;
+    }
+
+    .refs-list a {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .refs-note {
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .refs-section {
+        padding: 40px 3%;
+    }
+
+    .hero-section {
+        padding: 100px 10px 50px;
+        min-height: 450px;
+    }
+
+    .aurora-text {
+        font-size: clamp(1.8rem, 10vw, 2.5rem);
+    }
+
+    .hero-subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+
+    .refs-box {
+        padding: 18px;
+        margin: 18px auto 0;
+        border-radius: 10px;
+    }
+
+    .refs-box h2 {
+        font-size: 1.2rem;
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .refs-list {
+        gap: 8px;
+    }
+
+    .refs-list li {
+        padding: 10px 12px;
+    }
+
+    .refs-list strong {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+
+    .refs-list a {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .refs-note {
+        font-size: 0.85rem;
+        padding: 10px;
+        margin-top: 15px;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .refs-list a {
+        display: inline-block;
+        padding: 4px 0;
+        min-height: 24px;
+    }
+
+    .refs-list li:hover {
+        transform: none;
+    }
+
+    .refs-list li:active {
+        transform: translateX(4px);
+        background: rgba(50, 50, 100, 0.7);
+    }
+}

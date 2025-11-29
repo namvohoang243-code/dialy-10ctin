@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Cấu Tạo Lõi Trái Đất</title>
+    <!-- Chatbot Widget CSS -->
+    <link rel="stylesheet" href="chatbot-widget.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0e27;
+            font-family: Arial, sans-serif;
+        }
+
+        #structure-3d-container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .structure-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(20, 20, 20, 0.9);
+            padding: 20px;
+            border-radius: 50px;
+            border: 2px solid rgba(64, 156, 255, 0.4);
+        }
+
+        .structure-control-btn {
+            background: rgba(64, 156, 255, 0.2);
+            border: 2px solid #409cff;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .structure-control-btn:hover {
+            background: rgba(64, 156, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .structure-control-btn.active {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            border-color: #ff9800;
+        }
+
+        .info {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(20, 20, 20, 0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 2px solid rgba(64, 156, 255, 0.3);
+        }
+
+        .info h2 {
+            margin: 0 0 10px 0;
+            color: #4fc3f7;
+        }
+
+        .info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h2>🌍 Test - Cấu Tạo Lõi Trái Đất</h2>
+        <p>Click vào Trái Đất hoặc nút "Tách Lớp" để xem</p>
+        <p>Kéo chuột để xoay</p>
+    </div>
+
+    <div id="structure-3d-container"></div>
+
+    <div class="structure-controls">
+        <button class="structure-control-btn" onclick="toggleStructureSeparation()" id="structureToggleBtn">
+            🌍 Tách Lớp
+        </button>
+        <button class="structure-control-btn" onclick="toggleStructureAutoRotate()" id="structureRotateBtn">
+            🔄 Tự Động Xoay
+        </button>
+        <button class="structure-control-btn" onclick="resetStructureView()">
+            ↺ Đặt Lại
+        </button>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Earth Structure Script -->
+    <script src="earth-structure.js"></script>
+
+    <script>
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            console.log('🚀 [Test] Page loaded, initializing...');
+            setTimeout(() => {
+                if (typeof initEarthStructure3D === 'function') {
+                    initEarthStructure3D();
+                } else {
+                    console.error('❌ [Test] initEarthStructure3D not found!');
+                }
+            }, 500);
+        });
+    </script>
+  
+  <!-- Chatbot Widget -->
+  <script src="chatbot-widget.js"></script>
+</body>
+</html>
