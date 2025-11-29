@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thuyết kiến tạo mảng và cấu trúc Trái Đất</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="baiviet.css">
+  <link rel="stylesheet" href="chatbot-widget.css">
+  <style>
+    /* Scoped UI upgrades for this article */
+    #thuyet-kien-tao-mang.article-ui { max-width: 880px; margin: 0 auto; }
+    #thuyet-kien-tao-mang.article-ui h2 {
+      font-weight: 700; 
+      font-size: 2rem;
+      letter-spacing: -0.02em; 
+      margin-bottom: 20px;
+      margin-top: 10px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(103, 215, 255, 0.4);
+      color: #ffffff;
+      background: linear-gradient(135deg, #67d7ff, #409cff); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #thuyet-kien-tao-mang.article-ui h3 {
+      margin-top: 28px; 
+      margin-bottom: 16px; 
+      font-weight: 600; 
+      font-size: 1.5rem;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      position: relative; 
+      padding-left: 12px;
+      border-left: 4px solid #67d7ff;
+    }
+    #thuyet-kien-tao-mang.article-ui h3:before {
+      display: none;
+    }
+    #thuyet-kien-tao-mang.article-ui h4 { 
+      margin-top: 20px; 
+      margin-bottom: 12px;
+      font-weight: 600; 
+      font-size: 1.25rem;
+      color: #e0f2ff; 
+    }
+    #thuyet-kien-tao-mang.article-ui p { 
+      line-height: 1.9; 
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #f0f0f0;
+      margin-bottom: 16px;
+      text-align: justify;
+      letter-spacing: 0.01em;
+    }
+    #thuyet-kien-tao-mang.article-ui ul { 
+      padding-left: 24px; 
+      color: #f0f0f0;
+    }
+    #thuyet-kien-tao-mang.article-ui li { 
+      margin: 10px 0;
+      color: #f0f0f0;
+      line-height: 1.85;
+      font-size: 1.08rem;
+    }
+    #thuyet-kien-tao-mang.article-ui ul li::marker {
+      color: #67d7ff;
+      font-size: 1.2em;
+    }
+    #thuyet-kien-tao-mang.article-ui .section-divider { 
+      height: 1px; 
+      background: linear-gradient(90deg, rgba(103,215,255,.45), transparent); 
+      margin: 18px 0; 
+      border: 0; 
+    }
+
+    /* Callout styles */
+    .callout { 
+      border-radius: 12px; 
+      padding: 16px 18px; 
+      border: 1px solid rgba(103,215,255,.3); 
+      background: rgba(103,215,255,.08);
+      color: #e8f4ff;
+    }
+    .callout i { color: #67d7ff; }
+
+    /* Source list aesthetics */
+    .source-list { list-style: none; padding-left: 0; }
+    .source-list li { 
+      margin: 10px 0; 
+      padding-left: 28px; 
+      position: relative;
+      color: #f0f0f0;
+      line-height: 1.8;
+    }
+    .source-list li:before { 
+      content: "\f02d"; 
+      font-family: "Font Awesome 6 Free"; 
+      font-weight: 900; 
+      color: #67d7ff; 
+      position: absolute; 
+      left: 0; 
+    }
+
+    /* Back to top button */
+    .article-top-btn { 
+      position: fixed; 
+      right: 18px; 
+      bottom: 22px; 
+      z-index: 999; 
+      border: none; 
+      border-radius: 50px; 
+      padding: 10px 14px; 
+      background: linear-gradient(135deg, #409cff, #67d7ff); 
+      color: #fff; 
+      box-shadow: 0 10px 24px rgba(64,156,255,.4); 
+    }
+    .article-top-btn:hover { 
+      filter: brightness(1.1); 
+      color: #fff; 
+      box-shadow: 0 12px 30px rgba(103,215,255,.5);
+    }
+
+    /* Shortcut spacing */
+    .pt-shortcut { margin: 10px 0 18px; }
+
+    /* Article intro box */
+    .article-intro {
+      background: linear-gradient(135deg, rgba(64,156,255,0.15), rgba(103,215,255,0.08));
+      border: 1px solid rgba(103,215,255,0.3);
+      border-left: 4px solid #67d7ff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .article-intro h3 {
+      color: #67d7ff !important;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      border: none !important;
+      padding-left: 0 !important;
+    }
+    .article-intro p {
+      color: #e0f2ff;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    /* Info cards */
+    .info-card {
+      background: rgba(30,41,59,0.95);
+      border: 1px solid rgba(103,215,255,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
+      transition: all 0.3s ease;
+    }
+    .info-card:hover {
+      border-color: rgba(103,215,255,0.4);
+      box-shadow: 0 8px 24px rgba(103,215,255,0.15);
+      transform: translateY(-2px);
+    }
+    .info-card h4 {
+      color: #67d7ff !important;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .info-card p {
+      color: #d0e7ff;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    /* Reading progress bar */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: linear-gradient(90deg, #409cff, #67d7ff);
+      z-index: 9999;
+      transition: width 0.1s ease;
+    }
+
+    /* Section divider */
+    .section-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #67d7ff, transparent);
+      margin: 40px 0;
+      border: none;
+    }
+
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .stat-box {
+      background: linear-gradient(135deg, rgba(64,156,255,0.15), rgba(103,215,255,0.05));
+      border: 1px solid rgba(103,215,255,0.25);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .stat-box:hover {
+      border-color: rgba(103,215,255,0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(103,215,255,0.2);
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #67d7ff;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      color: #d0e7ff;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar giống trang chủ -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top site-navbar">
+    <div class="container">
+      <a class="navbar-brand site-name" href="index.html"><i class="fas fa-globe me-2"></i>Địa Lý Trái Đất</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-3">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Bài viết</a>
+            <ul class="dropdown-menu fade-in">
+              <li><a class="dropdown-item" href="he-qua-chuyen-dong.html"><i class="fas fa-globe-americas me-2"></i>Hệ quả của chuyển động Trái Đất</a></li>
+              <li><a class="dropdown-item" href="kien-tao-mang.html"><i class="fas fa-layer-group me-2"></i>Thuyết kiến tạo mảng và cấu trúc Trái Đất</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item nav-item-3d">
+            <a class="nav-link tour-3d" href="thamquan3d.html"><i class="fas fa-globe-americas me-2"></i>Mô phỏng 3D</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Thuyết kiến tạo mảng và cấu trúc Trái Đất</h1>
+      <p class="lead">Tổng hợp kiến thức: nguồn gốc Trái Đất, vỏ Trái Đất, nội dung thuyết kiến tạo mảng, bằng chứng và chu kỳ Wilson</p>
+    </div>
+  </section>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress" id="readingProgress"></div>
+
+  <div class="content-container">
+    <main class="main-content container">
+      
+      <!-- Article Intro -->
+      <div class="article-intro">
+        <h3><i class="fas fa-layer-group me-2"></i>Tổng quan bài viết</h3>
+        <p>Khám phá hành trình 4,6 tỷ năm hình thành Trái Đất, cấu trúc lớp vỏ, và học thuyết kiến tạo mảng - nền tảng của địa chất hiện đại giải thích sự hình thành núi non, động đất và núi lửa.</p>
+      </div>
+
+      <section id="thuyet-kien-tao-mang" class="fade-section visible article-ui">
+        <h2>Thuyết kiến tạo mảng và cấu trúc Trái Đất</h2>
+
+        <style>
+  /* Shortcut block styled like scene-selector from thamquan3d */
+  .pt-shortcut .scene-selector { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 14px 0 4px; }
+  .pt-shortcut .scene-btn {
+    display: grid; grid-template-columns: 48px auto; align-items: center; gap: 12px;
+    background: linear-gradient(180deg, rgba(64,156,255,0.10), rgba(64,156,255,0.04));
+    border: 1px solid rgba(64,156,255,0.25);
+    border-radius: 14px; padding: 12px 14px; cursor: pointer; text-align: left;
+    box-shadow: 0 8px 18px rgba(64,156,255,0.15);
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    text-decoration: none; color: inherit;
+  }
+  .pt-shortcut .scene-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(64,156,255,0.22);
+    border-color: rgba(64,156,255,0.45);
+  }
+  .pt-shortcut .scene-btn i { font-size: 20px; color: #67d7ff; }
+  .pt-shortcut .scene-name { display:block; font-weight:700; color:#ffffff; margin:0; }
+  .pt-shortcut .scene-desc { display:block; font-size: 13px; color:#d0e7ff; opacity:.85; margin-top:2px; }
+</style>
+<div class="pt-shortcut">
+  <div class="scene-selector">
+    <a class="scene-btn" href="thamquan3d.html?scene=plate-tectonics">
+      <i class="fas fa-puzzle-piece"></i>
+      <div>
+        <span class="scene-name">Kiến Tạo Mảng</span>
+        <span class="scene-desc">Mở ngay màn hình mô phỏng trong Tham quan 3D</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+        <h3>1. Nguồn gốc hình thành Trái Đất</h3>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-number">4.6</div>
+            <div class="stat-label">Tỷ năm tuổi</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">13.7</div>
+            <div class="stat-label">Tỷ năm (Big Bang)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">6,371</div>
+            <div class="stat-label">km bán kính TB</div>
+          </div>
+        </div>
+
+        <p>Theo giả thuyết học thuyết tinh vân, hệ Mặt Trời – bao gồm Trái Đất – hình thành cách đây khoảng 4,6 tỷ năm từ một đám mây khí bụi quay quanh tâm Ngân Hà. Đám mây khí ban đầu gồm chủ yếu hydro, helium và các nguyên tố nặng sinh ra từ siêu tân tinh sau vụ nổ Big Bang ~13,7 tỷ năm trước. Trái Đất khởi nguyên có thể đồng chất hay phân lớp từ đầu; có hai lý thuyết chính giải thích phân bố các lớp: thuyết bồi tụ đồng hình cho rằng Trái Đất ban đầu đồng nhất và nóng chảy, sắt–nicken chìm xuống tạo lõi.</p>ống tạo thành lõi, còn silicat nhẹ nổi lên thành manti và vỏ. Trong khi đó, thuyết bồi tụ dị hình cho rằng các nguyên tố đông đặc theo thứ tự từ nhân (Fe–Ni) đầu tiên, tiếp theo manti, và lớp vỏ đông lạnh cuối cùng khi tinh vân nguội dần. Những lý thuyết này giúp giải thích tại sao Trái Đất có cấu trúc phân tầng (lõi, manti, vỏ) hiện nay.</p>
+
+        <hr class="section-divider">
+
+        <h3>2. Vỏ Trái Đất và vật liệu cấu tạo vỏ</h3>
+        
+        <div class="alert alert-info mt-3" style="background: rgba(64, 156, 255, 0.1); border: 1px solid rgba(64, 156, 255, 0.3); border-radius: 10px; padding: 15px;">
+          <i class="fas fa-vr-cardboard me-2"></i>
+          <strong>Xem Mô Phỏng 3D:</strong> 
+          <a href="thamquan3d.html" class="text-white" style="text-decoration: underline;">Khám phá mô hình Cấu Trúc Trái Đất 3D tương tác →</a>
+        </div>
+        
+        <h4>2.1 Đặc điểm vỏ Trái Đất</h4>
+        
+        <div class="info-card">
+          <h4><i class="fas fa-water me-2"></i>Vỏ đại dương</h4>
+          <p>Độ dày ~5-10 km, chủ yếu là đá bazan (mafic), tỷ trọng lớn, trẻ hơn (< 200 triệu năm).</p>
+        </div>
+
+        <div class="info-card">
+          <h4><i class="fas fa-mountain me-2"></i>Vỏ lục địa</h4>
+          <p>Độ dày ~30-70 km, chủ yếu là đá granite (felsic), tỷ trọng nhỏ hơn, có thể cổ đến 4 tỷ năm.</p>
+        </div>
+
+        <p>Lớp vỏ (lớp vỏ Trái Đất) là lớp ngoài cùng, rất mỏng so với bán kính Trái Đất. Độ dày trung bình khoảng 5–70 km: mỏng nhất là dưới đáy đại dương (~5–10 km), dày nhất là ở các vùng núi trẻ trên lục địa (~60–70 km). Về thể tích, vỏ chiếm khoảng 1% Trái Đất và chỉ ~0,5% khối lượng.</p> địa chủ yếu gồm đá granit (kiểu felsic, tỷ trọng thấp), dày hơn nhiều (trung bình ~35 km, có thể tới 70 km ở đới núi). Tóm lại, vỏ lục địa dày và nhẹ hơn, trong khi vỏ đại dương mỏng và nặng hơn. Chuyển động của các mảng kiến tạo nằm trong thạch quyển (gồm vỏ và phần thượng của manti), trượt trên tầng manti bên dưới (quyển mềm).</p>
+        <h4>2.2 Vật liệu cấu tạo vỏ Trái Đất</h4>
+        <p>Vật liệu chính cấu tạo nên vỏ Trái Đất là khoáng vật silicat, gồm các khoáng chứa silic (Si) và oxy (O). Khoáng vật silicat chiếm khoảng 90% lớp vỏ. Theo số liệu địa hóa, bốn nguyên tố chiếm 88,1% khối lượng vỏ Trái Đất là Oxy (46%), Silic (28%), Nhôm (~8%) và Sắt (~6%). Nói cách khác, thành phần hóa học vỏ được gọi là quyển sial (vỏ lục địa chứa Si và Al) và quyển sima (vỏ đại dương chứa Si và Mg). Về loại đá, vỏ Trái Đất gồm chủ yếu là đá xâm nhập và biến chất (khoảng 95%), phần nhỏ còn lại là các đá trầm tích (như đá phiến sét, đá cát, đá vôi). Ví dụ, đại bộ phận vỏ đại dương là đá bazan (mác-ma) có nguồn gốc từ sự nguội đột ngột của dung nham dưới biển, trong khi vỏ lục địa nhiều đá granit, được hình thành chủ yếu qua quá trình kết tinh và biến chất sâu trong vỏ Trái Đất.</p>
+
+        <hr class="section-divider">
+
+        <h3>2.3. Ba loại đá chính: Đá magma, Đá trầm tích, Đá biến chất</h3>
+        
+        <figure class="my-3 text-center">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Rock_cycle_nps.png/800px-Rock_cycle_nps.png" alt="Chu trình đá" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 400px; object-fit: cover;">
+          <figcaption class="small text-muted mt-2">Hình: Chu trình tuần hoàn của các loại đá trong tự nhiên</figcaption>
+        </figure>
+
+        <p>Vỏ Trái Đất được cấu tạo từ ba loại đá chính, liên tục chuyển hóa lẫn nhau trong một chu trình địa chất gọi là <strong>Chu trình đá (Rock Cycle)</strong>.</p>
+
+        <figure class="my-4 text-center">
+          <img src="geometry2/chu trinh da.jpg" alt="Chu trình đá" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 500px; object-fit: contain;">
+          <figcaption class="small text-muted mt-2">Hình: Chu trình đá - Ba loại đá chính và quá trình chuyển hóa lẫn nhau</figcaption>
+        </figure>
+
+        <div class="info-card">
+          <h4><i class="fas fa-fire me-2"></i>1️⃣ ĐÁ MAGMA (Đá Lửa / Igneous Rock)</h4>
+          
+          <p><strong>Định nghĩa:</strong> Đá magma hình thành từ sự nguội và kết tinh của magma (dung nham nóng chảy) từ bên trong Trái Đất.</p>
+          
+          <h5 style="color: #67d7ff; margin-top: 15px;">Hai loại đá magma:</h5>
+          <ul>
+            <li><strong>Đá magma xâm nhập (Intrusive):</strong> Magma nguội chậm ở sâu dưới lòng đất → tinh thể lớn. Ví dụ: <strong>Granite</strong> (đá granit - phổ biến nhất vỏ lục địa)</li>
+            <li><strong>Đá magma phun trào (Extrusive):</strong> Magma phun lên bề mặt qua núi lửa, nguội nhanh → tinh thể nhỏ. Ví dụ: <strong>Basalt</strong> (đá bazan - chiếm 70% vỏ đại dương)</li>
+          </ul>
+
+          <p><strong>Đặc điểm:</strong> Đá magma chiếm ~95% vỏ Trái Đất. Basalt (màu đen, nặng) chủ yếu ở đại dương, Granite (màu sáng, nhẹ) chủ yếu ở lục địa.</p>
+        </div>
+
+        <div class="info-card">
+          <h4><i class="fas fa-layer-group me-2"></i>2️⃣ ĐÁ TRẦM TÍCH (Sedimentary Rock)</h4>
+          
+          <p><strong>Định nghĩa:</strong> Đá trầm tích hình thành từ sự tích tụ, nén ép và gắn kết các mảnh vụn đá cũ, cát, bùn, hoặc vỏ sinh vật trong hàng triệu năm.</p>
+          
+          <p><strong>Ba loại:</strong> (1) Trầm tích vụn (Sandstone từ cát, Shale từ bùn), (2) Trầm tích hóa học (Limestone - đá vôi), (3) Trầm tích hữu cơ (Coal - than đá).</p>
+
+          <p><strong>Đặc điểm:</strong> Chỉ chiếm ~5% vỏ Trái Đất nhưng phủ 75% bề mặt. Có cấu trúc phân lớp, chứa hóa thạch, chứa dầu mỏ/khí đốt/than đá.</p>
+        </div>
+
+        <div class="info-card">
+          <h4><i class="fas fa-compress-arrows-alt me-2"></i>3️⃣ ĐÁ BIẾN CHẤT (Metamorphic Rock)</h4>
+          
+          <p><strong>Định nghĩa:</strong> Đá biến chất hình thành khi đá cũ bị biến đổi do nhiệt độ cao và/hoặc áp suất lớn (KHÔNG nóng chảy hoàn toàn).</p>
+          
+          <p><strong>Quá trình:</strong> Đá vôi → <strong>Đá hoa (Marble)</strong>; Cát kết → <strong>Quartzite</strong>; Sét kết → <strong>Slate</strong> → <strong>Schist</strong> → <strong>Gneiss</strong>.</p>
+
+          <p><strong>Đặc điểm:</strong> Cấu trúc định hướng (foliation), cứng và bền hơn đá gốc. Phổ biến ở đới núi trẻ (Himalaya, Alps).</p>
+        </div>
+
+        <div class="alert alert-warning mt-4" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 10px; padding: 15px;">
+          <h5 style="color: #ffc107;"><i class="fas fa-sync-alt me-2"></i>Chu trình đá (Rock Cycle)</h5>
+          <p style="margin-bottom: 0;">Ba loại đá liên tục chuyển hóa: <strong>Đá magma</strong> → phong hóa → <strong>Đá trầm tích</strong> → nhiệt + áp suất → <strong>Đá biến chất</strong> → nóng chảy → Magma → <strong>Đá magma</strong>. Chu trình này diễn ra trong hàng triệu năm!</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <h3>2.4. Các mảng kiến tạo chính trên Trái Đất</h3>
+        
+        <figure class="my-3 text-center">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Plates_tect2_en.svg/1280px-Plates_tect2_en.svg.png" alt="Bản đồ mảng kiến tạo" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 450px; object-fit: cover;">
+          <figcaption class="small text-muted mt-2">Hình: 15 mảng kiến tạo chính và ranh giới của chúng</figcaption>
+        </figure>
+
+        <p>Lớp thạch quyển Trái Đất bị chia thành <strong>15 mảng kiến tạo chính</strong> và hàng chục mảng nhỏ. Các mảng này di chuyển liên tục với tốc độ ~2-10 cm/năm.</p>
+
+        <div class="info-card">
+          <h4><i class="fas fa-globe-americas me-2"></i>15 mảng kiến tạo chính</h4>
+          
+          <p><strong>7 mảng lớn:</strong> (1) Thái Bình Dương (lớn nhất ~103 triệu km²), (2) Bắc Mỹ, (3) Á-Âu, (4) Phi, (5) Nam Cực, (6) Ấn Độ-Úc, (7) Nam Mỹ.</p>
+          
+          <p><strong>8 mảng nhỏ hơn:</strong> Nazca, Philippines, Ả Rập, Caribe, Cocos, Scotia, Juan de Fuca, Iran.</p>
+        </div>
+
+        <div class="info-card">
+          <h4><i class="fas fa-arrows-alt me-2"></i>Ba loại ranh giới mảng</h4>
+          
+          <ul>
+            <li><strong>Ranh giới phân ly:</strong> Hai mảng tách ra → magma trào lên → sống núi giữa đại dương (Ví dụ: Mid-Atlantic Ridge, Biển Đỏ)</li>
+            <li><strong>Ranh giới hội tụ:</strong> Hai mảng va chạm → (1) Chuỗi đảo núi lửa (Nhật Bản), (2) Núi lửa ven biển (Andes), (3) Dãy núi cao (Himalaya)</li>
+            <li><strong>Ranh giới trượt ngang:</strong> Hai mảng trượt qua nhau → động đất CỰC MẠNH, KHÔNG có núi lửa (Ví dụ: San Andreas)</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-info mt-4" style="background: rgba(64, 156, 255, 0.1); border: 1px solid rgba(64, 156, 255, 0.3); border-radius: 10px; padding: 15px;">
+          <p style="margin-bottom: 0;"><strong>Tốc độ di chuyển:</strong> Nhanh nhất ~10 cm/năm (Thái Bình Dương), trung bình 2-5 cm/năm. Trong 50 triệu năm, một mảng có thể di chuyển ~1,000-5,000 km!</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <h3>3. Thuyết kiến tạo mảng</h3>
+<figure class="my-3 text-center">
+  <img src="geometry/Ranhdaiduong1.jpg" alt="Ranh giới đại dương - hút chìm" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 360px; object-fit: cover;">
+  <figcaption class="small text-muted mt-2">Hình: Ranh giới đại dương và hút chìm</figcaption>
+</figure>
+        <h4>3.1 Nội dung thuyết kiến tạo mảng</h4>
+        <p>Thuyết kiến tạo mảng khẳng định lớp thạch quyển Trái Đất bị chia thành nhiều mảng cứng (tectonic plates) di chuyển tương đối so với nhau trên lớp manti dẻo bên dưới (astenosphere). Bề dày của các mảng này khoảng ~100 km và bao gồm vỏ đại dương (sima) và vỏ lục địa (sial). Hiện nay người ta xác định khoảng 15 mảng kiến tạo chính cùng nhiều mảng nhỏ trên bề mặt Trái Đất. Chuyển động của các mảng được điều khiển chủ yếu bởi các dòng đối lưu nhiệt trong manti: vật chất nóng dưới sâu trào lên, đẩy các mảng tách xa (tạo ranh giới phân kỳ) và hút mảng lặn xuống các rãnh sâu (tạo ranh giới hội tụ). Theo đó, có ba kiểu ranh giới chính: ranh giới phân kỳ (mảng tách nhau, sinh vỏ mới và sống núi giữa đại dương), ranh giới hội tụ (mảng va đụng hoặc một mảng lặn xuống dưới mảng kia, gây nén đứt tạo đới hút chìm và tạo núi) và ranh giới trượt ngang (mảng trượt sát nhau theo chiều ngang, tạo đứt gãy lớn). Ví dụ, ranh giới phân kỳ ở Đại Tây Dương dẫn đến sự kiến tạo sống núi giữa Đại Tây Dương và tạo vỏ đại dương mới; ranh giới hội tụ giữa mảng Thái Bình Dương và Bắc Mỹ sinh ra vành đai núi lửa Đông Á (dãy núi lửa Nhật Bản); ranh giới trượt ngang như đứt gãy San Andreas tại California gây ra các trận động đất mạnh. Nhìn chung, thuyết kiến tạo mảng giải thích nguồn gốc và phân bố của hầu hết các hiện tượng địa chất trên Trái Đất.</p>
+        <h4>3.2 Nguyên nhân hình thành núi trẻ, động đất, núi lửa</h4>
+<figure class="my-3 text-center">
+  <img src="geometry/Nuilua1.jpg" alt="Núi lửa" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 360px; object-fit: cover;">
+  <figcaption class="small text-muted mt-2">Hình: Hoạt động núi lửa liên quan ranh giới mảng</figcaption>
+</figure>
+        <p>Theo thuyết kiến tạo mảng, các dãy núi trẻ thường hình thành ở các ranh giới hội tụ. Ví dụ, khi hai mảng đại lục va chạm (như mảng Ấn Độ va mảng Âu-Á), vỏ bị nén ép tạo thành dãy Himalaya; khi mảng đại dương va mảng lục địa (như mảng Nazca lặn xuống dưới mảng Nam Mỹ), sự hút chìm này sinh ra cung đảo núi lửa (dãy Andes) và xây dựng núi trẻ (như đỉnh Ojos del Salado cao nhất Nam Mỹ). Các dãy núi lửa (vành đai núi lửa) chủ yếu nằm dọc theo ranh giới mảng, nhất là đới hút chìm (vành đai lửa Thái Bình Dương với hàng trăm núi lửa, gồm ~425 núi lửa hoành hành quanh rìa Thái Bình Dương). Động đất tập trung nhiều ở các đới đứt gãy và đới va chạm giữa các mảng – thống kê cho thấy >80% trận động đất và núi lửa trên thế giới xảy ra dọc theo các ranh giới mảng. Nói chung, các hiện tượng như tạo núi, hoạt động núi lửa và động đất là hậu quả trực tiếp của chuyển động tương đối giữa các mảng kiến tạo, thông qua cơ chế tách giãn tại sống núi giữa đại dương (sinh núi mới và núi lửa biển), và hút chìm tạo núi, cung đảo núi lửa, đứt gãy tại rìa hội tụ.</p>
+
+        <h3>4. Bằng chứng và dẫn chứng cho thuyết kiến tạo mảng</h3>
+<figure class="my-3 text-center">
+  <img src="geometry/Dongdat1.jpg" alt="Động đất dọc ranh giới mảng" class="img-fluid rounded shadow-sm" loading="lazy" style="max-height: 360px; object-fit: cover;">
+  <figcaption class="small text-muted mt-2">Hình: Động đất tập trung dọc ranh giới mảng</figcaption>
+</figure>
+        <p>Nhiều bằng chứng địa chất ủng hộ học thuyết kiến tạo mảng. Một trong những phát hiện quan trọng là dải vằn từ tính đối xứng hai bên sống núi giữa đại dương: đáy biển mới sinh tại sống núi chứa nhiễm từ đặc trưng (theo từ trường Trái Đất tại thời điểm đó), ghi lại các lần đảo cực; việc khảo sát từ trường đáy biển thấy các dải xen kẽ bình thường–đảo trái này lan dài hàng chục nghìn km song song sống núi. Giải thích hợp lý là đáy đại dương liên tục mở rộng từ trung tâm sống núi và “sổ sách từ tính” này hỗ trợ giả thuyết giãn tách đáy biển. Ngoài ra, các phép đo địa chất cũng cho thấy đáy đại dương chủ yếu là đá bazan mác-ma (đá đen giàu Fe, Mg) với độ dày mỏng (~5–10 km), trong khi đá lục địa chủ yếu là đá granit (trắng/hồng, giàu Si, Al) với độ dày lớn (~30–70 km). Điều này được phát hiện từ thập niên 1940 khi Ewing và cộng sự đo đạc địa vật lý cho thấy lục địa và đại dương không trao đổi vỏ trực tiếp; đáy biển được cấu tạo bởi bazan, và vỏ đại dương rất mỏng so với vỏ lục địa. Bằng chứng khác liên quan đến phân bố hóa thạch và cấu tạo địa chất trên các lục địa tách rời. Nhiều lớp đá và hóa thạch ở ven bờ Nam Mỹ, Phi, Ấn Độ, Úc, Nam Cực rất giống nhau, chứng tỏ các khu vực này từng gắn kết (siêu lục địa cổ), như dãy Caledonides ở Âu châu rất tương đồng với dãy Appalachians ở Bắc Mỹ. Sự tương đồng về thạch học và địa tầng này chỉ hợp lý nếu các mảng trước kia tiếp giáp rồi tách rời. Cuối cùng, phân bố động đất và núi lửa toàn cầu tập trung dọc theo ranh giới mảng – việc vẽ bản đồ xảy ra động đất, núi lửa toàn cầu cho thấy hầu như trùng với đường mảng (sống núi đại dương, rãnh sâu, đứt gãy). Tất cả những bằng chứng này (vằn từ đáy biển, thành phần vỏ khác biệt, hóa thạch và sự kiện địa chất liên tục, phân bố động-đất lửa) đều nhất quán với mô hình kiến tạo mảng và củng cố thuyết kiến tạo mảng.</p>
+
+        <h3>5. Chu kỳ kiến tạo mảng và siêu lục địa (mở rộng)</h3>
+        <p>Học thuyết kiến tạo mảng cũng giải thích lịch sử hình thành – phân rã các siêu lục địa theo chu kỳ Wilson. Theo đó, các lục địa từng hợp nhất thành những khối lớn (ví dụ siêu lục địa Pangaea) rồi lại tách rời, tạo liên tục đại dương mới và hủy vỏ cũ. Thực tế cho thấy Nam Mỹ, Phi, Ấn Độ, Úc… hiện nay là mảnh vụn của một siêu lục địa chung (Pangaea) tồn tại cách đây khoảng 225 triệu năm. Trước Pangaea còn có các siêu lục địa cổ hơn (ví dụ Rodinia khoảng 1 tỷ năm trước). Trong chu kỳ Wilson, lục địa tách giãn, hợp nhất và lại tách giãn theo thời gian địa chất; ví dụ Đại Tây Dương đang mở rộng (các mảng dịch chuyển ra xa sống núi giữa Đại Tây Dương), trong khi Thái Bình Dương đang co lại (các đới hút chìm xâu vào nhau). Hiểu biết về chu kỳ này giúp giải thích về hướng di chuyển của các mảng (như mảng Ấn Độ di chuyển về phía bắc tạo Himalaya) và dự báo tương lai: hàng trăm triệu năm sau, các lục địa có thể tiếp tục hội tụ thành siêu lục địa mới. Nghiên cứu kiến tạo mảng vì vậy không chỉ giải thích quá khứ địa chất Trái Đất, mà còn đóng vai trò quan trọng trong đánh giá tài nguyên (dầu, khoáng sản thường phân bố theo bậc mảng) và dự báo thiên tai (động đất, phun trào) liên quan đến vận động mảng.</p>
+
+        <h3>Nguồn tham khảo</h3>
+        <ul>
+          <li>Sự hình thành Trái Đất – Bách khoa Toàn thư Việt Nam</li>
+          <li>History of Earth - Wikipedia</li>
+          <li>Vỏ Trái Đất – Wikipedia tiếng Việt</li>
+          <li>Which elements make up most of the Earth's crust? | World Economic Forum</li>
+          <li>Danh sách mảng kiến tạo – Wikipedia tiếng Việt</li>
+          <li>Khoáng vật silicat – Wikipedia tiếng Việt</li>
+          <li>volcanoes.usgs.gov</li>
+          <li>Kiến tạo mảng – Wikipedia tiếng Việt</li>
+          <li>Plate Tectonics and Volcanic Activity</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <p class="mb-0">© 2025 Geography Education Project</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="chatbot-widget.js"></script>
+  
+  <!-- Reading Progress Script -->
+  <script>
+    // Reading progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('readingProgress').style.width = scrolled + '%';
+    });
+
+    // Smooth animations on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.info-card, .stat-box').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
